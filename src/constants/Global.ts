@@ -114,7 +114,7 @@ export const ErrorHandler = async (error: ApiError): Promise<string> => {
                     messages = error.response.data.Data.map((msg: string, index: number) =>
                         `${index + 1}. ${msg}`).join('\n');
                 } else {
-                    messages = error.response.data.Data || error.response.data.message || 'Error en la respuesta del servidor';
+                    messages = (error.response.data.Data as string) || error.response.data.message || 'Error en la respuesta del servidor';
                 }
             }
         } else {

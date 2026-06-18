@@ -1,5 +1,5 @@
 import { useEventListener, useMountEffect, useResizeListener, useUnmountEffect } from 'primereact/hooks';
-import type { AppTopbarRef, ChildContainerProps, LayoutConfig, LayoutState } from 'types/index';
+import type { AppTopbarRef, ChildContainerProps, LayoutState } from 'types/index';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { classNames, DomHandler } from 'primereact/utils';
 import { useDocumentTitle } from 'hooks/useDocumentTitle';
@@ -7,11 +7,12 @@ import { LayoutContext } from './context/layoutcontext';
 import { PrimeReactContext } from 'primereact/api';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import AppBreadCrumb from './AppBreadCrumb';
 import { routes } from 'routes/Routes';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
 import AppFooter from './AppFooter';
-import AppBreadCrumb from './AppBreadCrumb';
+
 const Layout = (props: ChildContainerProps) => {
   const { layoutConfig, layoutState, setLayoutState, isSlim, isSlimPlus, isHorizontal, isDesktop, isSidebarActive } =
     useContext(LayoutContext);

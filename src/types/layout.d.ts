@@ -140,7 +140,7 @@ export interface AppConfigProps {
 /* AppTopbar Types */
 export type NodeRef = MutableRefObject<ReactNode>;
 export interface AppTopbarRef {
-    menubutton?: HTMLButtonElement | null;
+    menubutton?: HTMLAnchorElement | null;
     topbarmenu?: HTMLDivElement | null;
     topbarmenubutton?: HTMLButtonElement | null;
 }
