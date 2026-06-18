@@ -122,8 +122,7 @@ const LoaderComponent: React.FC<LoaderComponentProps> = ({ show, showBackground 
             </g>
           </svg>
           <svg className="loader-texto">
-            <text x="50%" y="50%" dy=".35em" textAnchor="middle">Diligent<a className="loader-r">®</a>
-            </text>
+            <text x="50%" y="50%" dy=".35em" textAnchor="middle">Universidad de Guayaquil</text>
           </svg>
           <div className="loader-span">
             <div className="loader-typing_loader"></div>

@@ -6,14 +6,6 @@ export const IMAGE_VISOR = import.meta.env.VITE_IMAGE_VISOR;
 const URL_SECURITY = `${API}/security/api/`;
 const URL_CATALOG = `${API}/catalog/api/`;
 
-console.log('*********************');
-console.log('net.diligentec.web.shell');
-console.log('API', API);
-console.log('ENVIRONMENT', ENVIRONMENT);
-console.log('IMAGE_VISOR', IMAGE_VISOR);
-console.log('URL_SECURITY', URL_SECURITY);
-console.log('*********************');
-
 export const SecurityPathsEnum: Record<string, string> = {
     Auth: 'auth',
     AuthById: 'auth/by_identification',

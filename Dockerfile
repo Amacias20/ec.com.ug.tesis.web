@@ -1,4 +1,4 @@
-FROM registry.diligent.la/net.diligentec.template/net.diligentec.template.images:node-22.13.1 AS build
+FROM node:22.13.1 AS build
 
 ARG VITE_ENVIRONMENT=development
 ARG VITE_BASE_API
@@ -22,20 +22,20 @@ RUN echo "➡ VITE_IMAGE_VISOR: $VITE_IMAGE_VISOR"
 RUN echo "➡ VITE_APP_VERSION: $VITE_APP_VERSION" 
 RUN echo "➡ VITE_APP_CODE: $VITE_APP_CODE"
 
-COPY ["net.diligentec.web.shell/package.json", "./package.json"]
-COPY ["net.diligentec.web.shell/yarn.lock", "./yarn.lock"]
+COPY ["package.json", "./package.json"]
+COPY ["yarn.lock", "./yarn.lock"]
 COPY [".ci-cd/nginx.conf", "./"]
 
 RUN yarn --ignore
 
-COPY ["net.diligentec.web.shell/", "./"]
+COPY ["./", "./"]
 
 RUN rm -rf dist && \
     if [ "$VITE_ENVIRONMENT" = "production" ]; then yarn build-prd; fi && \
     if [ "$VITE_ENVIRONMENT" = "qa" ]; then yarn build-qas; fi && \
     if [ "$VITE_ENVIRONMENT" = "development" ]; then yarn build-dev; fi
 
-FROM registry.diligent.la/net.diligentec.template/net.diligentec.template.images:stable-alpine3.20-slim AS final
+FROM nginx:stable-alpine3.20-slim AS final
 
 
 COPY --from=build /src/dist/. /usr/share/nginx/html/

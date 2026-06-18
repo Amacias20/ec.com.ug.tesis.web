@@ -1,6 +1,6 @@
 :root {
-    --diligentec-orange: #f26d24;
-    --diligentec-blue: #154270;
+    --universidad-de-guayaquil-orange: #f26d24;
+    --universidad-de-guayaquil-blue: #154270;
 }
 
 .panel-search-collapsed {
@@ -15,28 +15,28 @@
     transition: max-height 0.5s ease-in-out;
 }
 
-.diligentec-text-orange {
-    color: var(--diligentec-orange) !important;
+.universidad-de-guayaquil-text-orange {
+    color: var(--universidad-de-guayaquil-orange) !important;
 }
 
-.diligentec-bg-orange {
-    background-color: var(--diligentec-orange) !important;
+.universidad-de-guayaquil-bg-orange {
+    background-color: var(--universidad-de-guayaquil-orange) !important;
 }
 
-.diligentec-border-orange {
-    border-color: var(--diligentec-orange) !important;
+.universidad-de-guayaquil-border-orange {
+    border-color: var(--universidad-de-guayaquil-orange) !important;
 }
 
-.diligentec-text-blue {
-    color: var(--diligentec-blue) !important;
+.universidad-de-guayaquil-text-blue {
+    color: var(--universidad-de-guayaquil-blue) !important;
 }
 
-.diligentec-bg-blue {
-    background-color: var(--diligentec-blue) !important;
+.universidad-de-guayaquil-bg-blue {
+    background-color: var(--universidad-de-guayaquil-blue) !important;
 }
 
-.diligentec-border-blue {
-    border-color: var(--diligentec-blue) !important;
+.universidad-de-guayaquil-border-blue {
+    border-color: var(--universidad-de-guayaquil-blue) !important;
 }
 
 @media (max-width: 1200px) {
