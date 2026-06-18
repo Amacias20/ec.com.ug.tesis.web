@@ -30,7 +30,7 @@ const DeactivateDialog: React.FC<DeactivateDialogProps> = ({
 
     const deactivateItem = async () => {
         try {
-            await deactivateService(data[idField]);
+            await deactivateService(data[idField] as string | number);
             hideDialog();
             fetchData();
             ToastSuccess('Proceso exitoso');
