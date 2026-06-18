@@ -1,0 +1,8 @@
+{
+  "systemicLupusErythematosus": { "abbr": "LES", "name": "Lupus eritematoso sistémico" },
+  "rheumatoidArthritis": { "abbr": "AR", "name": "Artritis reumatoide" },
+  "sjogrensSyndrome": { "abbr": "SS", "name": "Síndrome de Sjögren" },
+  "ankylosingSpondylitis": { "abbr": "EA", "name": "Espondilitis anquilosante" },
+  "reactiveArthritis": { "abbr": "ARe", "name": "Artritis reactiva" },
+  "psoriaticArthritis": { "abbr": "APs", "name": "Artritis psoriásica" }
+}

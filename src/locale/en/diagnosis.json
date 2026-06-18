@@ -1,0 +1,20 @@
+{
+  "title": "Patient evaluation",
+  "subtitle": "14 clinical biomarkers → multi-label prediction",
+  "patientData": "Patient data",
+  "age": "Age",
+  "gender": "Gender",
+  "predict": "Predict",
+  "predictWithExplanation": "Predict + explanation",
+  "results": "Results",
+  "overlapSyndrome": "Overlap syndrome detected (multiple positive diseases)",
+  "missingFeatures": "Imputed missing features: {{features}}",
+  "modelUsed": "Model: {{name}}",
+  "colDisease": "Disease",
+  "colProbability": "Probability",
+  "colDiagnosis": "Diagnosis",
+  "colThreshold": "Threshold",
+  "emptyResults": "Complete the form and click \"Predict\" to see results.",
+  "tabShap": "SHAP (top features)",
+  "tabLime": "LIME"
+}

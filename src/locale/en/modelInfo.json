@@ -1,0 +1,14 @@
+{
+  "title": "Model information",
+  "loadError": "Could not load model information",
+  "architecture": "Architecture",
+  "inputFeatures": "Input features",
+  "labels": "Labels",
+  "featureNames": "Feature names",
+  "thresholdsTitle": "Optimal thresholds per disease",
+  "colCode": "Code",
+  "colDisease": "Disease",
+  "colThreshold": "Threshold",
+  "testMetrics": "Test metrics",
+  "modelFeatures": "Model features"
+}

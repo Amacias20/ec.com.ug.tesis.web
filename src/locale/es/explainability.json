@@ -1,0 +1,7 @@
+{
+  "title": "Explicabilidad global",
+  "subtitle": "Importancia de variables por enfermedad (SHAP)",
+  "loadError": "No se pudo cargar la importancia global. Entrena el modelo con scripts/train.py (requiere background_data.npy).",
+  "chartTitle": "{{abbr}} — Top features (SHAP)",
+  "chartYAxis": "Importancia"
+}

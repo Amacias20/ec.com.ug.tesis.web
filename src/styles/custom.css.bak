@@ -1,0 +1,137 @@
+:root {
+    --diligentec-orange: #f26d24;
+    --diligentec-blue: #154270;
+}
+
+.panel-search-collapsed {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.panel-search-expanded {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.diligentec-text-orange {
+    color: var(--diligentec-orange) !important;
+}
+
+.diligentec-bg-orange {
+    background-color: var(--diligentec-orange) !important;
+}
+
+.diligentec-border-orange {
+    border-color: var(--diligentec-orange) !important;
+}
+
+.diligentec-text-blue {
+    color: var(--diligentec-blue) !important;
+}
+
+.diligentec-bg-blue {
+    background-color: var(--diligentec-blue) !important;
+}
+
+.diligentec-border-blue {
+    border-color: var(--diligentec-blue) !important;
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        width: 95%;
+    }
+}
+.layout-content {
+    animation: slideUp 0.1s ease-in-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px); /* Ajusta la cantidad de movimiento vertical según necesites */
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.layout-sidebar .layout-menu li.active-menuitem > a {
+    color: #154270;
+    background-color: var(--active-menuitem-bg);
+}
+
+.layout-sidebar .layout-menu li.active-menuitem > a .layout-menuitem-icon {
+    color: #154270;
+}
+
+.layout-topbar .layout-topbar-start .layout-menu-button {
+    background-color: #a24900;
+}
+
+.p-picklist .p-picklist-buttons .p-button.p-button-icon-only {
+    background-color: #154270;
+}
+
+.p-column-filter-clear-button {
+    display: none;
+}
+
+
+.p-treetable .p-treetable-striped .p-treetable-tbody > tr.p-row-odd.p-highlight,
+.p-treetable .p-treetable-tbody > tr.p-highlight {
+    background: unset;
+}
+
+.layout-drawer.layout-sidebar-anchored .layout-sidebar-top .layout-sidebar-anchor {
+    background-color: #fafafa;
+}
+
+.layout-drawer .layout-sidebar .layout-sidebar-top .layout-sidebar-anchor {
+    border: #fb8c00;
+}
+
+.p-datepicker .p-datepicker-header {
+    padding: 0.1rem;
+    color: #495057;
+    background: #ffffff;
+    font-weight: 600;
+    margin: 0;
+    border-bottom: 1px solid #dee2e6;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+  .p-datepicker .p-datepicker-buttonbar {
+    padding: 0.1rem 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.p-datepicker table td {
+    padding: 0.2rem;
+  }
+
+.p-datepicker table td > span {
+    width: 2.0rem;
+    height: 2.0rem;
+    border-radius: 20%;
+    transition: box-shadow 0.2s;
+    border: 1px solid transparent;
+}
+
+.layout-topbar .layout-topbar-end .layout-megamenu.p-megamenu .p-megamenu-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text, .layout-topbar .layout-topbar-end .layout-megamenu.p-megamenu .p-megamenu-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon, .layout-topbar .layout-topbar-end .layout-megamenu.p-megamenu .p-megamenu-root-list > .p-menuitem > .p-menuitem-link .p-submenu-icon{
+    color: #ffffff !important
+}
+
+.layout-content{
+    width: 100% !important;
+}

@@ -1,0 +1,15 @@
+include:
+ - project: net.diligentec.template/net.diligentec.template.cicd
+   ref: main
+   file:
+     - CI-CD-k8s-React.yaml
+
+stages:
+  - build
+  - release
+  - deploy
+
+variables:
+  PROJECT_NAME:  "net.diligentec.web.shell"
+  GROUP_NAME: "net.diligentec.shell"
+  MAJOR: 0

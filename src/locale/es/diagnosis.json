@@ -1,0 +1,20 @@
+{
+  "title": "Evaluación de paciente",
+  "subtitle": "14 biomarcadores clínicos → predicción multi-etiqueta",
+  "patientData": "Datos del paciente",
+  "age": "Edad",
+  "gender": "Género",
+  "predict": "Predecir",
+  "predictWithExplanation": "Predecir + explicación",
+  "results": "Resultados",
+  "overlapSyndrome": "Síndrome de solapamiento detectado (múltiples enfermedades positivas)",
+  "missingFeatures": "Features faltantes imputadas: {{features}}",
+  "modelUsed": "Modelo: {{name}}",
+  "colDisease": "Enfermedad",
+  "colProbability": "Probabilidad",
+  "colDiagnosis": "Diagnóstico",
+  "colThreshold": "Umbral",
+  "emptyResults": "Completa el formulario y pulsa \"Predecir\" para ver los resultados.",
+  "tabShap": "SHAP (top features)",
+  "tabLime": "LIME"
+}

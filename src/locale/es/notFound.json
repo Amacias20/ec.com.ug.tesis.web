@@ -1,0 +1,8 @@
+{
+  "title": "Página no encontrada",
+  "subtitle": "Lo sentimos, no pudimos encontrar la página que buscas",
+  "message": "La página que estás buscando podría haber sido eliminada, haber cambiado de nombre o no estar disponible temporalmente.",
+  "checkUrl": "Verifica la URL en la barra de direcciones",
+  "goHome": "Ir a la página de inicio",
+  "goBack": "Regresar"
+}

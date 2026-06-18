@@ -1,0 +1,37 @@
+.handsontable-custom td {
+  /* background-color: #fffce8; */
+}
+.handsontable-custom th {
+  /* background-color: #1e4d74; */
+  /* color: #fff; */
+}
+
+/* Cambiar color de fondo general */
+.handsontable td {
+  /* background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px; */
+}
+
+/* Cambiar encabezado */
+.handsontable th {
+  background-color: #e9c284;
+  /* color: white; */
+  /* font-weight: bold; */
+  /* text-align: center; */
+}
+
+/* Estilo para la celda activa */
+.handsontable .current {
+  background-color: #d1ecf1 !important;
+}
+
+/* Opcional: bordes de tabla */
+.handsontable .htCore td,
+.handsontable .htCore th {
+  /* border: 1px solid #ccc; */
+}
+
+.handsontable tbody th.ht__highlight, .handsontable thead th.ht__highlight {
+    background-color: #e9b25b !important;
+}

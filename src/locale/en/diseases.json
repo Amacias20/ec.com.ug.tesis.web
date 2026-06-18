@@ -1,0 +1,8 @@
+{
+  "systemicLupusErythematosus": { "abbr": "SLE", "name": "Systemic Lupus Erythematosus" },
+  "rheumatoidArthritis": { "abbr": "RA", "name": "Rheumatoid Arthritis" },
+  "sjogrensSyndrome": { "abbr": "SS", "name": "Sjögren's Syndrome" },
+  "ankylosingSpondylitis": { "abbr": "AS", "name": "Ankylosing Spondylitis" },
+  "reactiveArthritis": { "abbr": "ReA", "name": "Reactive Arthritis" },
+  "psoriaticArthritis": { "abbr": "PsA", "name": "Psoriatic Arthritis" }
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Global explainability",
+  "subtitle": "Feature importance per disease (SHAP)",
+  "loadError": "Could not load global importance. Train the model with scripts/train.py (requires background_data.npy).",
+  "chartTitle": "{{abbr}} — Top features (SHAP)",
+  "chartYAxis": "Importance"
+}

@@ -1,0 +1,166 @@
+/* Estilos base para el contenedor del loader */
+.loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Animación para el logo */
+.loader-logo {
+  width: 280px;
+  height: 280px;
+  fill: none;
+  stroke: #154270;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 10000;
+  stroke-dashoffset: -1038.66;
+  animation: loader-stroke 1.8s infinite alternate;
+}
+
+@keyframes loader-stroke {
+  0% {
+    fill: rgba(242, 109, 36, 0);
+    stroke: rgba(21, 66, 112, 1);
+    stroke-dashoffset: 25%;
+    stroke-dasharray: 0 50%;
+    stroke-width: 2;
+  }
+  40% {
+    fill: rgba(242, 109, 36, 0);
+    stroke: rgba(21, 66, 112, 1);
+  }
+  60% {
+    fill: rgba(242, 109, 36, 0);
+    stroke: rgba(21, 66, 112, 1);
+    stroke-width: 3;
+  }
+  90% {
+    fill: rgba(242, 109, 36, 1);
+    stroke: rgba(21, 66, 112, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+  100% {
+    fill: rgba(242, 109, 36, 1);
+    stroke: rgba(21, 66, 112, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+}
+
+/* Estilos para el texto */
+.loader-texto {
+  margin-top: 30px;
+  width: 420px;
+  height: 85px;
+  font-family: Arial, sans-serif;
+  font-size: 52px;
+  font-weight: bold;
+}
+
+.loader-texto text {
+  animation: loader-strokeTexto 1.8s infinite alternate;
+  stroke-width: 2;
+  stroke: #154270;
+  fill: rgba(21, 66, 112, 0);
+}
+
+@keyframes loader-strokeTexto {
+  0% {
+    fill: rgba(21, 66, 112, 0);
+    stroke: rgba(21, 66, 112, 1);
+    stroke-dashoffset: 25%;
+    stroke-dasharray: 0 50%;
+    stroke-width: 2;
+  }
+  40% {
+    fill: rgba(21, 66, 112, 0);
+    stroke: rgba(21, 66, 112, 1);
+  }
+  60% {
+    fill: rgba(21, 66, 112, 0);
+    stroke: rgba(21, 66, 112, 1);
+    stroke-width: 3;
+  }
+  90% {
+    fill: rgba(21, 66, 112, 1);
+    stroke: rgba(21, 66, 112, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+  100% {
+    fill: rgba(21, 66, 112, 1);
+    stroke: rgba(21, 66, 112, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+}
+
+.loader-r {
+  font-size: 26px;
+  vertical-align: super;
+  stroke-width: 1;
+}
+
+/* Animación de typing loader */
+.loader-span {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.loader-typing_loader {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: loader-typing 1.8s linear infinite alternate;
+  margin: 15px auto;
+  position: relative;
+}
+
+@keyframes loader-typing {
+  0% {
+    background-color: rgba(21, 66, 112, 0.8);
+    box-shadow: 12px 0 0 0 rgba(242, 109, 36, 0.5),
+      -12px 0 0 0 rgba(242, 109, 36, 0.5),
+      24px 0 0 0 rgba(21, 66, 112, 0.8),
+      -24px 0 0 0 rgba(21, 66, 112, 0.8);
+  }
+  25% {
+    background-color: rgba(242, 109, 36, 0.5);
+    box-shadow: 12px 0 0 0 rgba(21, 66, 112, 0.8),
+      -12px 0 0 0 rgba(21, 66, 112, 0.8),
+      24px 0 0 0 rgba(242, 109, 36, 0.5),
+      -24px 0 0 0 rgba(242, 109, 36, 0.5);
+  }
+  50% {
+    background-color: rgba(21, 66, 112, 0.8);
+    box-shadow: 12px 0 0 0 rgba(242, 109, 36, 0.5),
+      -12px 0 0 0 rgba(242, 109, 36, 0.5),
+      24px 0 0 0 rgba(21, 66, 112, 0.8),
+      -24px 0 0 0 rgba(21, 66, 112, 0.8);
+  }
+  75% {
+    background-color: rgba(242, 109, 36, 0.5);
+    box-shadow: 12px 0 0 0 rgba(21, 66, 112, 0.8),
+      -12px 0 0 0 rgba(21, 66, 112, 0.8),
+      24px 0 0 0 rgba(242, 109, 36, 0.5),
+      -24px 0 0 0 rgba(242, 109, 36, 0.5);
+  }
+}
+
+/* Clase para prevenir selección */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

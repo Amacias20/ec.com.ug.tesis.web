@@ -1,0 +1,14 @@
+{
+  "title": "Información del modelo",
+  "loadError": "No se pudo cargar la información del modelo",
+  "architecture": "Arquitectura",
+  "inputFeatures": "Features de entrada",
+  "labels": "Etiquetas",
+  "featureNames": "Nombres de features",
+  "thresholdsTitle": "Umbrales óptimos por enfermedad",
+  "colCode": "Código",
+  "colDisease": "Enfermedad",
+  "colThreshold": "Umbral",
+  "testMetrics": "Métricas en test",
+  "modelFeatures": "Features del modelo"
+}

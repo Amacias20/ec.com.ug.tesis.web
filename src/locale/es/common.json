@@ -1,0 +1,17 @@
+{
+  "appName": "Diagnóstico Autoinmune",
+  "appNameShort": "DA",
+  "language": "Idioma",
+  "spanish": "Español",
+  "english": "English",
+  "loading": "Cargando...",
+  "noData": "Sin datos",
+  "clear": "Limpiar",
+  "positive": "Positivo",
+  "negative": "Negativo",
+  "male": "Masculino",
+  "female": "Femenino",
+  "placeholderEmpty": "—",
+  "apiError": "Error al consultar la API",
+  "footer": "Proyecto de Titulación — Diagnóstico Multi-Enfermedad Autoinmune © {{year}}"
+}

@@ -1,0 +1,17 @@
+{
+  "appName": "Autoimmune Diagnosis",
+  "appNameShort": "AD",
+  "language": "Language",
+  "spanish": "Español",
+  "english": "English",
+  "loading": "Loading...",
+  "noData": "No data",
+  "clear": "Clear",
+  "positive": "Positive",
+  "negative": "Negative",
+  "male": "Male",
+  "female": "Female",
+  "placeholderEmpty": "—",
+  "apiError": "Error calling the API",
+  "footer": "Thesis Project — Multi-Disease Autoimmune Diagnosis © {{year}}"
+}

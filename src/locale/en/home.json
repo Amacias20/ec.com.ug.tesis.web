@@ -1,0 +1,22 @@
+{
+  "title": "Multi-Disease Autoimmune Diagnosis",
+  "subtitle": "Multi-label classification of six rheumatic diseases using deep learning.",
+  "backendOffline": "Could not connect to the backend. Run: uvicorn main:app --reload --port 8000",
+  "backendUnavailable": "Backend unavailable",
+  "apiConnected": "API connected successfully",
+  "cardEvaluationTitle": "New evaluation",
+  "cardEvaluationDesc": "Enter patient biomarkers to obtain diagnosis predictions.",
+  "goToDiagnosis": "Go to diagnosis",
+  "cardModelTitle": "Model",
+  "architecture": "Architecture",
+  "inputs": "Inputs",
+  "outputs": "Outputs",
+  "features": "features",
+  "diseasesCount": "diseases",
+  "viewDetails": "View details",
+  "modelUnavailable": "Model unavailable",
+  "cardExplainTitle": "Explainability",
+  "cardExplainDesc": "Global feature importance (SHAP) and per-patient explanations (LIME/SHAP).",
+  "viewImportance": "View importance",
+  "evaluatedDiseases": "Evaluated diseases"
+}

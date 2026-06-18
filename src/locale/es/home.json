@@ -1,0 +1,22 @@
+{
+  "title": "Diagnóstico Multi-Enfermedad Autoinmune",
+  "subtitle": "Clasificación multi-etiqueta de seis enfermedades reumáticas mediante aprendizaje profundo.",
+  "backendOffline": "No se pudo conectar con el backend. Ejecuta: uvicorn main:app --reload --port 8000",
+  "backendUnavailable": "Backend no disponible",
+  "apiConnected": "API conectada correctamente",
+  "cardEvaluationTitle": "Nueva evaluación",
+  "cardEvaluationDesc": "Ingresa los biomarcadores del paciente para obtener predicciones de diagnóstico.",
+  "goToDiagnosis": "Ir a diagnóstico",
+  "cardModelTitle": "Modelo",
+  "architecture": "Arquitectura",
+  "inputs": "Entradas",
+  "outputs": "Salidas",
+  "features": "features",
+  "diseasesCount": "enfermedades",
+  "viewDetails": "Ver detalles",
+  "modelUnavailable": "Modelo no disponible",
+  "cardExplainTitle": "Explicabilidad",
+  "cardExplainDesc": "Importancia global de variables (SHAP) y explicaciones por paciente (LIME/SHAP).",
+  "viewImportance": "Ver importancia",
+  "evaluatedDiseases": "Enfermedades evaluadas"
+}
