@@ -67,8 +67,8 @@ const Diagnosis = () => {
     ];
     optionalKeys.forEach((key) => {
       const val = form[key];
-      if (val !== null && val !== undefined && val !== '') {
-        (payload as Record<string, unknown>)[key] = val;
+      if (val !== null && val !== undefined && (val as any) !== '') {
+        (payload as any)[key] = val;
       }
     });
     return payload;

@@ -56,7 +56,6 @@ const Explainability = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-1">{t('explainability:title')}</h1>
       <p className="text-color-secondary mb-4">{t('explainability:subtitle')}</p>
-
       <Accordion multiple activeIndex={[0]}>
         {Object.entries(data).map(([disease, features]) => (
           <AccordionTab key={disease} header={`${getAbbr(disease)} — ${getName(disease)}`}>
