@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Card } from 'primereact/card';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { useTranslation } from 'react-i18next';
 import { getModelInfo, ModelInfoResponse } from 'services/diagnosisApi';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { Message } from 'primereact/message';
 import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
+import { DataTable } from 'primereact/datatable';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { Column } from 'primereact/column';
+import { Card } from 'primereact/card';
 
 const ModelInfo = () => {
   const { t } = useTranslation(['modelInfo', 'common']);
@@ -44,14 +43,14 @@ const ModelInfo = () => {
             {error || t('common:noData')}
           </p>
           <div className="flex gap-3">
-             <button className="p-button p-component p-button-outlined p-button-secondary border-round-xl" onClick={() => window.location.reload()}>
-                <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
-                <span className="p-button-label p-c">Reintentar</span>
-             </button>
-             <button className="p-button p-component p-button-primary border-round-xl" onClick={() => window.history.back()}>
-                <span className="p-button-icon p-c p-button-icon-left pi pi-arrow-left"></span>
-                <span className="p-button-label p-c">Volver</span>
-             </button>
+            <button className="p-button p-component p-button-outlined p-button-secondary border-round-xl" onClick={() => window.location.reload()}>
+              <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
+              <span className="p-button-label p-c">Reintentar</span>
+            </button>
+            <button className="p-button p-component p-button-primary border-round-xl" onClick={() => window.history.back()}>
+              <span className="p-button-icon p-c p-button-icon-left pi pi-arrow-left"></span>
+              <span className="p-button-label p-c">Volver</span>
+            </button>
           </div>
         </div>
       </div>
@@ -68,8 +67,6 @@ const ModelInfo = () => {
 
   return (
     <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-      
-      {/* Premium Hero Section */}
       <div className="relative border-round-3xl overflow-hidden shadow-4" style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)', color: 'white', padding: '3rem 2rem 5rem 2rem' }}>
         <div className="absolute opacity-20" style={{ right: '-5%', top: '-20%', transform: 'rotate(15deg)' }}>
           <i className="pi pi-database" style={{ fontSize: '15rem' }}></i>
@@ -84,8 +81,6 @@ const ModelInfo = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating Quick Stats Overlapping Hero */}
       <div className="grid grid-nogutter gap-4 px-3" style={{ marginTop: '-4rem', position: 'relative', zIndex: 2 }}>
         <div className="col-12 md:col flex">
           <Card className="w-full border-none shadow-4 border-round-2xl hover:-translate-y-1 transition-all transition-duration-300">
@@ -124,7 +119,6 @@ const ModelInfo = () => {
           </Card>
         </div>
       </div>
-
       <div className="grid">
         <div className="col-12 xl:col-7">
           <Card className="shadow-2 border-none border-round-2xl h-full border-1 surface-border">
@@ -138,56 +132,54 @@ const ModelInfo = () => {
               <Column field="abbr" header={t('modelInfo:colCode')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" bodyClassName="font-bold text-indigo-600 text-lg" />
               <Column field="disease" header={t('modelInfo:colDisease')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" bodyClassName="text-700 font-medium" />
               <Column field="threshold" header={t('modelInfo:colThreshold')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" body={(r) => (
-                  <div className="flex align-items-center gap-3">
-                      <div className="w-6rem surface-200 border-round h-1rem overflow-hidden">
-                          <div className="bg-indigo-500 h-full" style={{ width: `${r.threshold * 100}%` }}></div>
-                      </div>
-                      <span className="text-800 font-bold">{r.threshold.toFixed(4)}</span>
+                <div className="flex align-items-center gap-3">
+                  <div className="w-6rem surface-200 border-round h-1rem overflow-hidden">
+                    <div className="bg-indigo-500 h-full" style={{ width: `${r.threshold * 100}%` }}></div>
                   </div>
+                  <span className="text-800 font-bold">{r.threshold.toFixed(4)}</span>
+                </div>
               )} />
             </DataTable>
           </Card>
         </div>
-        
         <div className="col-12 xl:col-5 flex flex-column gap-4">
           {metrics && (
             <Card className="shadow-2 border-none border-round-2xl border-1 surface-border">
               <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
-                  <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
-                    <div className="bg-teal-100 text-teal-600 p-2 border-round-md"><i className="pi pi-chart-pie"></i></div>
-                    {t('modelInfo:testMetrics')}
-                  </h3>
+                <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
+                  <div className="bg-teal-100 text-teal-600 p-2 border-round-md"><i className="pi pi-chart-pie"></i></div>
+                  {t('modelInfo:testMetrics')}
+                </h3>
               </div>
               <div className="grid">
                 {Object.entries(metrics).map(([key, val]) => {
                   const numVal = typeof val === 'number' ? val : parseFloat(val);
                   const isPercentage = numVal <= 1.0;
                   const displayVal = typeof val === 'number' ? val.toFixed(4) : String(val);
-                  
                   return (
-                  <div key={key} className="col-6">
-                    <div className="p-3 surface-50 border-round-xl hover:surface-100 transition-colors border-1 surface-border h-full flex flex-column justify-content-center">
-                      <div className="text-xs text-500 font-bold mb-2 text-uppercase tracking-wide">{key}</div>
-                      <div className="text-2xl font-black text-900 mb-2">{displayVal}</div>
-                      {isPercentage && (
-                        <div className="w-full surface-300 border-round h-1rem mt-auto overflow-hidden">
-                          <div className="bg-teal-500 h-full border-round" style={{ width: `${numVal * 100}%` }}></div>
-                        </div>
-                      )}
+                    <div key={key} className="col-6">
+                      <div className="p-3 surface-50 border-round-xl hover:surface-100 transition-colors border-1 surface-border h-full flex flex-column justify-content-center">
+                        <div className="text-xs text-500 font-bold mb-2 text-uppercase tracking-wide">{key}</div>
+                        <div className="text-2xl font-black text-900 mb-2">{displayVal}</div>
+                        {isPercentage && (
+                          <div className="w-full surface-300 border-round h-1rem mt-auto overflow-hidden">
+                            <div className="bg-teal-500 h-full border-round" style={{ width: `${numVal * 100}%` }}></div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )})}
+                  )
+                })}
               </div>
             </Card>
           )}
-
           <Card className="shadow-2 border-none border-round-2xl flex-1 border-1 surface-border">
-             <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
-                  <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
-                    <div className="bg-pink-100 text-pink-600 p-2 border-round-md"><i className="pi pi-sitemap"></i></div>
-                    {t('modelInfo:modelFeatures')}
-                  </h3>
-              </div>
+            <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
+              <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
+                <div className="bg-pink-100 text-pink-600 p-2 border-round-md"><i className="pi pi-sitemap"></i></div>
+                {t('modelInfo:modelFeatures')}
+              </h3>
+            </div>
             <div className="flex flex-wrap gap-2 max-h-15rem overflow-y-auto pr-2 custom-scrollbar">
               {info.feature_names.map((f) => (
                 <span key={f} className="px-3 py-2 bg-white text-700 border-round-3xl text-sm font-semibold shadow-1 border-1 surface-border hover:border-pink-300 hover:text-pink-600 transition-colors cursor-default">
