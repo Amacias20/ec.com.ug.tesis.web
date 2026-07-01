@@ -1,8 +1,10 @@
 {
   "sectionMain": "Main",
   "home": "Home",
+  "dashboard": "Dashboard",
   "diagnosis": "Diagnosis",
   "modelInfo": "Model",
   "explainability": "Explainability",
+  "datasets": "Datasets",
   "notFound": "Page not found"
 }

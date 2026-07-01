@@ -1,8 +1,10 @@
 {
   "sectionMain": "Principal",
   "home": "Inicio",
+  "dashboard": "Panel",
   "diagnosis": "Diagnóstico",
   "modelInfo": "Modelo",
   "explainability": "Explicabilidad",
+  "datasets": "Datasets",
   "notFound": "Página no encontrada"
 }

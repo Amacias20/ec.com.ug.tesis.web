@@ -1,0 +1,15 @@
+{
+  "title": "Panel de Predicciones",
+  "subtitle": "Analítica basada en las predicciones realizadas por el modelo.",
+  "loadError": "No se pudieron cargar los datos del panel.",
+  "tileTotalPredictions": "Predicciones totales",
+  "tileOverlapCount": "Casos de solapamiento",
+  "tileModelUsed": "Modelo en uso",
+  "tileThreshold": "Umbral usado",
+  "chartDistributionTitle": "Distribución de diagnóstico principal",
+  "chartDistributionYAxis": "Predicciones",
+  "chartDistributionSeries": "Predicciones",
+  "chartTimelineTitle": "Predicciones en el tiempo",
+  "chartTimelineYAxis": "Predicciones",
+  "chartTimelineSeries": "Predicciones"
+}

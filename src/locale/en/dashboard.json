@@ -1,0 +1,15 @@
+{
+  "title": "Prediction Dashboard",
+  "subtitle": "Analytics based on the predictions made by the model.",
+  "loadError": "Could not load dashboard data.",
+  "tileTotalPredictions": "Total predictions",
+  "tileOverlapCount": "Overlap syndrome cases",
+  "tileModelUsed": "Model in use",
+  "tileThreshold": "Threshold used",
+  "chartDistributionTitle": "Primary diagnosis distribution",
+  "chartDistributionYAxis": "Predictions",
+  "chartDistributionSeries": "Predictions",
+  "chartTimelineTitle": "Predictions over time",
+  "chartTimelineYAxis": "Predictions",
+  "chartTimelineSeries": "Predictions"
+}

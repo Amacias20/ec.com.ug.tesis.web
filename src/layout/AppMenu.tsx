@@ -13,6 +13,7 @@ const AppMenu = () => {
         icon: 'pi pi-home',
         items: [
           { label: t('home'), icon: 'pi pi-home', to: '/' },
+          { label: t('dashboard'), icon: 'pi pi-chart-line', to: '/dashboard' },
           { label: t('diagnosis'), icon: 'pi pi-user-edit', to: '/diagnosis' },
           { label: t('modelInfo'), icon: 'pi pi-info-circle', to: '/model-info' },
           { label: t('explainability'), icon: 'pi pi-chart-bar', to: '/explainability' },

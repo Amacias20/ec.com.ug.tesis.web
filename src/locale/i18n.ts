@@ -16,6 +16,8 @@ import explainabilityES from './es/explainability.json';
 import explainabilityEN from './en/explainability.json';
 import diseasesES from './es/diseases.json';
 import diseasesEN from './en/diseases.json';
+import dashboardES from './es/dashboard.json';
+import dashboardEN from './en/dashboard.json';
 import notFoundES from './es/notFound.json';
 import notFoundEN from './en/notFound.json';
 
@@ -27,6 +29,7 @@ export const NAMESPACES = [
   'modelInfo',
   'explainability',
   'diseases',
+  'dashboard',
   'notFound',
 ] as const;
 
@@ -43,6 +46,7 @@ i18n
         modelInfo: modelInfoES,
         explainability: explainabilityES,
         diseases: diseasesES,
+        dashboard: dashboardES,
         notFound: notFoundES,
       },
       en: {
@@ -53,6 +57,7 @@ i18n
         modelInfo: modelInfoEN,
         explainability: explainabilityEN,
         diseases: diseasesEN,
+        dashboard: dashboardEN,
         notFound: notFoundEN,
       },
     },
