@@ -104,7 +104,7 @@ export async function getFeatureImportance(): Promise<Record<string, Record<stri
 
 export async function healthCheck(): Promise<boolean> {
   try {
-    await axios.get(`${API_BASE.replace('/api/v1', '')}/health`);
+    await client.get('/health');
     return true;
   } catch {
     return false;
