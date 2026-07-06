@@ -8,6 +8,8 @@ const client = axios.create({
 });
 
 export interface PatientInput {
+  first_name: string;
+  last_name: string;
   age: number;
   gender: 'Male' | 'Female';
   esr?: number | null;
@@ -77,6 +79,58 @@ export interface ExplainabilityResponse {
   top_negative_features: Record<string, string[]>;
 }
 
+// ---------------------------------------------------------------------------
+// Patient history types (PostgreSQL)
+// ---------------------------------------------------------------------------
+export interface PatientRecord {
+  id: string;
+  first_name: string;
+  last_name: string;
+  age: number;
+  gender: number;
+  primary_diagnosis: string | null;
+  primary_probability: number | null;
+  overlap_syndrome_detected: boolean;
+  model_used: string | null;
+  created_at: string;
+}
+
+export interface PredictionRecordOut {
+  id: string;
+  disease_name: string;
+  probability: number;
+  is_positive: boolean;
+  threshold_used: number;
+  is_primary: boolean;
+}
+
+export interface PatientDetail extends PatientRecord {
+  esr: number | null;
+  crp: number | null;
+  rf: number | null;
+  anti_ccp: number | null;
+  hla_b27: number | null;
+  ana: number | null;
+  anti_ro: number | null;
+  anti_la: number | null;
+  anti_dsdna: number | null;
+  anti_sm: number | null;
+  c3: number | null;
+  c4: number | null;
+  predictions: PredictionRecordOut[];
+}
+
+export interface PaginatedPatients {
+  items: PatientRecord[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}
+
+// ---------------------------------------------------------------------------
+// API calls
+// ---------------------------------------------------------------------------
 export async function predict(patient: PatientInput): Promise<PredictionResponse> {
   const { data } = await client.post<PredictionResponse>('/predict', patient);
   return data;
@@ -109,4 +163,21 @@ export async function healthCheck(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Patient CRUD
+// ---------------------------------------------------------------------------
+export async function getPatients(page = 1, size = 20): Promise<PaginatedPatients> {
+  const { data } = await client.get<PaginatedPatients>('/patients', { params: { page, size } });
+  return data;
+}
+
+export async function getPatient(id: string): Promise<PatientDetail> {
+  const { data } = await client.get<PatientDetail>(`/patients/${id}`);
+  return data;
+}
+
+export async function deletePatient(id: string): Promise<void> {
+  await client.delete(`/patients/${id}`);
 }
