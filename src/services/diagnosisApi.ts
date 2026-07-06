@@ -131,6 +131,10 @@ export interface PaginatedPatients {
 // ---------------------------------------------------------------------------
 // API calls
 // ---------------------------------------------------------------------------
+export interface ThresholdsResponse {
+  thresholds: Record<string, number>;
+}
+
 export async function predict(patient: PatientInput): Promise<PredictionResponse> {
   const { data } = await client.post<PredictionResponse>('/predict', patient);
   return data;
@@ -140,6 +144,21 @@ export async function predictWithExplanation(patient: PatientInput) {
   const { data } = await client.post('/predict-with-explanation', patient);
   return data as { prediction: PredictionResponse; explanation: ExplainabilityResponse };
 }
+
+export const checkHealth = async (): Promise<any> => {
+  const { data } = await client.get<any>('/health');
+  return data;
+};
+
+export const getThresholds = async (): Promise<Record<string, number>> => {
+  const { data } = await client.get<ThresholdsResponse>('/thresholds');
+  return data.thresholds;
+};
+
+export const updateThresholds = async (thresholds: Record<string, number>): Promise<{status: string; message: string}> => {
+  const { data } = await client.put('/thresholds', { thresholds });
+  return data;
+};
 
 export async function getModelInfo(): Promise<ModelInfoResponse> {
   const { data } = await client.get<ModelInfoResponse>('/model-info');

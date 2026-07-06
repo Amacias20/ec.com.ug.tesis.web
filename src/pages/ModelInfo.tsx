@@ -3,7 +3,11 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
 import { DataTable } from 'primereact/datatable';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { Slider } from 'primereact/slider';
+import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+import { updateThresholds } from 'services/diagnosisApi';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 
@@ -13,10 +17,20 @@ const ModelInfo = () => {
   const [info, setInfo] = useState<ModelInfoResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [localThresholds, setLocalThresholds] = useState<Record<string, number>>({});
+  const [saving, setSaving] = useState(false);
+  const toast = useRef<Toast>(null);
 
   useEffect(() => {
     getModelInfo()
-      .then(setInfo)
+      .then((data) => {
+        setInfo(data);
+        const initial: Record<string, number> = {};
+        data.label_names.forEach((name, i) => {
+          initial[name] = data.thresholds[i];
+        });
+        setLocalThresholds(initial);
+      })
       .catch(() => setError(t('modelInfo:loadError')))
       .finally(() => setLoading(false));
   }, [t]);
@@ -57,10 +71,28 @@ const ModelInfo = () => {
     );
   }
 
+  const handleSaveThresholds = async () => {
+    try {
+      setSaving(true);
+      await updateThresholds(localThresholds);
+      toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Umbrales guardados correctamente', life: 3000 });
+      setInfo(prev => {
+        if (!prev) return prev;
+        const newThresholds = prev.label_names.map(name => localThresholds[name]);
+        return { ...prev, thresholds: newThresholds };
+      });
+    } catch (e) {
+      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se pudieron guardar los cambios', life: 3000 });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const thresholdRows = info.label_names.map((name, i) => ({
     disease: getName(name),
+    rawName: name,
     abbr: getAbbr(name),
-    threshold: info.thresholds[i],
+    threshold: localThresholds[name] ?? info.thresholds[i],
   }));
 
   const metrics = info.metrics?.global;
@@ -127,16 +159,28 @@ const ModelInfo = () => {
                 <div className="bg-indigo-100 text-indigo-600 p-2 border-round-md"><i className="pi pi-sliders-h"></i></div>
                 {t('modelInfo:thresholdsTitle')}
               </h3>
+              <Button 
+                label={saving ? "Guardando..." : "Guardar Cambios"} 
+                icon={saving ? "pi pi-spin pi-spinner" : "pi pi-save"} 
+                severity="success" 
+                onClick={handleSaveThresholds} 
+                disabled={saving}
+              />
             </div>
+            <Toast ref={toast} />
             <DataTable value={thresholdRows} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-none">
               <Column field="abbr" header={t('modelInfo:colCode')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" bodyClassName="font-bold text-indigo-600 text-lg" />
               <Column field="disease" header={t('modelInfo:colDisease')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" bodyClassName="text-700 font-medium" />
               <Column field="threshold" header={t('modelInfo:colThreshold')} headerClassName="text-500 font-semibold bg-transparent border-bottom-1 surface-border" body={(r) => (
-                <div className="flex align-items-center gap-3">
-                  <div className="w-6rem surface-200 border-round h-1rem overflow-hidden">
-                    <div className="bg-indigo-500 h-full" style={{ width: `${r.threshold * 100}%` }}></div>
+                <div className="flex flex-column gap-2 w-full pr-4">
+                  <div className="flex justify-content-between align-items-center w-full">
+                    <span className="text-800 font-bold">{r.threshold.toFixed(4)}</span>
                   </div>
-                  <span className="text-800 font-bold">{r.threshold.toFixed(4)}</span>
+                  <Slider 
+                    value={r.threshold * 100} 
+                    onChange={(e) => setLocalThresholds(prev => ({ ...prev, [r.rawName]: (e.value as number) / 100 }))} 
+                    className="w-full mt-2" 
+                  />
                 </div>
               )} />
             </DataTable>
