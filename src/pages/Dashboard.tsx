@@ -1,4 +1,4 @@
-import { getDashboardSummary, getDiseaseDistribution, getPredictionsTimeline, DashboardSummary } from 'services/dashboardApi';
+import { getDashboardSummary, getDiseaseDistribution, getPredictionsTimeline, getDiseaseByGender, DashboardSummary } from 'services/dashboardApi';
 import { DashboardCard } from 'components/Panel/DashboardCard';
 import { DashboardTile } from 'components/Panel/DashboardTile';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -15,6 +15,7 @@ const Dashboard = () => {
   const { getAbbr } = useDiseaseLabel();
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [distribution, setDistribution] = useState<Record<string, number> | null>(null);
+  const [genderDistribution, setGenderDistribution] = useState<Record<string, { Femenino: number; Masculino: number }> | null>(null);
   const [timeline, setTimeline] = useState<{ date: string; count: number }[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,14 +25,16 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       try {
-        const [summaryData, distributionData, timelineData] = await Promise.all([
+        const [summaryData, distributionData, timelineData, genderData] = await Promise.all([
           getDashboardSummary(),
           getDiseaseDistribution(),
           getPredictionsTimeline(),
+          getDiseaseByGender(),
         ]);
         setSummary(summaryData);
         setDistribution(distributionData);
         setTimeline(timelineData);
+        setGenderDistribution(genderData);
       } catch {
         setError(t('dashboard:loadError'));
       } finally {
@@ -50,7 +53,7 @@ const Dashboard = () => {
     );
   }
 
-  if (error || !summary || !distribution || !timeline) {
+  if (error || !summary || !distribution || !timeline || !genderDistribution) {
     return <Message severity="warn" className="m-4" text={error || t('common:noData')} />;
   }
 
@@ -63,6 +66,24 @@ const Dashboard = () => {
     credits: { enabled: false },
     legend: { enabled: false },
   };
+
+  const genderOptions: Highcharts.Options = {
+    chart: { type: 'column', height: 320 },
+    title: { text: 'Enfermedades por Género' }, // Can add translations later
+    xAxis: { categories: Object.keys(genderDistribution).map(getAbbr) },
+    yAxis: { title: { text: 'Cantidad de Pacientes' } },
+    plotOptions: {
+      column: {
+        stacking: 'normal',
+      }
+    },
+    series: [
+      { type: 'column', name: 'Femenino', data: Object.values(genderDistribution).map(v => v.Femenino), color: '#d946ef' }, // Pink
+      { type: 'column', name: 'Masculino', data: Object.values(genderDistribution).map(v => v.Masculino), color: '#0ea5e9' } // Blue
+    ],
+    credits: { enabled: false },
+  };
+
 
   const timelineOptions: Highcharts.Options = {
     chart: { type: 'spline', height: 320 },
@@ -123,12 +144,17 @@ const Dashboard = () => {
       </div>
 
       <div className="grid">
-        <div className="col-12 lg:col-6">
+        <div className="col-12 lg:col-4">
           <DashboardCard>
             <HighchartsReact highcharts={Highcharts} options={distributionOptions} />
           </DashboardCard>
         </div>
-        <div className="col-12 lg:col-6">
+        <div className="col-12 lg:col-4">
+          <DashboardCard>
+            <HighchartsReact highcharts={Highcharts} options={genderOptions} />
+          </DashboardCard>
+        </div>
+        <div className="col-12 lg:col-4">
           <DashboardCard>
             <HighchartsReact highcharts={Highcharts} options={timelineOptions} />
           </DashboardCard>

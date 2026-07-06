@@ -30,6 +30,11 @@ export async function getDiseaseDistribution(): Promise<Record<string, number>> 
   return data;
 }
 
+export async function getDiseaseByGender(): Promise<Record<string, { Femenino: number; Masculino: number }>> {
+  const { data } = await client.get<Record<string, { Femenino: number; Masculino: number }>>('/dashboard/disease-by-gender');
+  return data;
+}
+
 export async function getPredictionsTimeline(): Promise<TimelinePoint[]> {
   const { data } = await client.get<TimelinePoint[]>('/dashboard/timeline');
   return data;
