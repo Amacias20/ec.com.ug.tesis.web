@@ -17,3 +17,51 @@ body.loading {
     z-index: 9999; 
   }
    */
+
+/* Print Styles for ReportViewer */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .report-dialog, .report-dialog * {
+    visibility: visible;
+  }
+  .report-dialog {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+  .p-dialog-mask {
+    background: transparent !important;
+  }
+  .print-hide, .p-dialog-header, .p-dialog-footer {
+    display: none !important;
+  }
+  .print-bg-white {
+    background-color: white !important;
+  }
+  .print-text-black {
+    color: black !important;
+  }
+  .print-border-black {
+    border-color: #ddd !important;
+  }
+  .print-shadow-none {
+    box-shadow: none !important;
+  }
+  .print-p-0 {
+    padding: 0 !important;
+  }
+  .print-m-0 {
+    margin: 0 !important;
+  }
+  .print-hide-scroll {
+    overflow: visible !important;
+  }
+}

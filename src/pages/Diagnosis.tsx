@@ -11,6 +11,7 @@ import { Button } from 'primereact/button';
 import NewDiagnosis from './NewDiagnosis';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
+import ReportViewer from './ReportViewer';
 
 const Diagnosis = () => {
   const { t } = useTranslation(['diagnosis', 'common']);
@@ -22,6 +23,7 @@ const Diagnosis = () => {
   const [lazyParams, setLazyParams] = useState({ first: 0, rows: 10, page: 1 });
   const [modalVisible, setModalVisible] = useState(false);
   const [detailVisible, setDetailVisible] = useState(false);
+  const [reportVisible, setReportVisible] = useState(false);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
 
   const loadPatients = async () => {
@@ -106,6 +108,7 @@ const Diagnosis = () => {
   const actionBody = (rowData: PatientRecord) => (
     <div className="flex gap-2">
       <Button icon="pi pi-eye" rounded outlined severity="info" aria-label="View" onClick={() => { setSelectedPatientId(rowData.id); setDetailVisible(true); }} tooltip={t('diagnosis:viewDetail')} />
+      <Button icon="pi pi-file-pdf" rounded outlined severity="warning" aria-label="Report" onClick={() => { setSelectedPatientId(rowData.id); setReportVisible(true); }} tooltip="Ver Reporte" />
       <Button icon="pi pi-trash" rounded outlined severity="danger" aria-label="Delete" onClick={() => confirmDelete(rowData.id)} />
     </div>
   );
@@ -185,6 +188,13 @@ const Diagnosis = () => {
         visible={detailVisible}
         patientId={selectedPatientId}
         onHide={() => { setDetailVisible(false); setSelectedPatientId(null); }}
+      />
+
+      {/* Report Viewer Component */}
+      <ReportViewer
+        visible={reportVisible}
+        patientId={selectedPatientId}
+        onHide={() => { setReportVisible(false); setSelectedPatientId(null); }}
       />
     </div>
   );
