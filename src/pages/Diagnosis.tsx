@@ -8,7 +8,9 @@ import { Button } from 'primereact/button';
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import NewDiagnosis from './NewDiagnosis';
+import DiagnosisDetail from './DiagnosisDetail';
 
 const Diagnosis = () => {
   const { t } = useTranslation(['diagnosis', 'common']);
@@ -23,6 +25,8 @@ const Diagnosis = () => {
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
 
   const loadPatients = async () => {
     setLoadingTable(true);
@@ -49,8 +53,19 @@ const Diagnosis = () => {
     });
   };
 
+  const confirmDelete = (id: string) => {
+    confirmDialog({
+      message: t('diagnosis:deleteConfirm'),
+      header: 'Confirmar eliminación',
+      icon: 'pi pi-exclamation-triangle text-red-500',
+      acceptClassName: 'p-button-danger',
+      acceptLabel: t('diagnosis:yes') || 'Sí',
+      rejectLabel: t('diagnosis:no') || 'No',
+      accept: () => handleDelete(id)
+    });
+  };
+
   const handleDelete = async (id: string) => {
-    if (!window.confirm(t('diagnosis:deleteConfirm'))) return;
     try {
       await deletePatient(id);
       toast.current?.show({ severity: 'success', summary: 'Success', detail: t('diagnosis:deleteSuccess') });
@@ -94,13 +109,15 @@ const Diagnosis = () => {
   );
   const actionBody = (rowData: PatientRecord) => (
     <div className="flex gap-2">
-      <Button icon="pi pi-trash" rounded outlined severity="danger" aria-label="Delete" onClick={() => handleDelete(rowData.id)} />
+      <Button icon="pi pi-eye" rounded outlined severity="info" aria-label="View" onClick={() => { setSelectedPatientId(rowData.id); setDetailVisible(true); }} tooltip={t('diagnosis:viewDetail')} />
+      <Button icon="pi pi-trash" rounded outlined severity="danger" aria-label="Delete" onClick={() => confirmDelete(rowData.id)} />
     </div>
   );
 
   return (
     <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
       <Toast ref={toast} />
+      <ConfirmDialog style={{ width: '450px' }} className="shadow-4" />
       
       {/* Premium Hero Section */}
       <div className="relative border-round-3xl overflow-hidden shadow-4" style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', color: 'white', padding: '3rem 2rem' }}>
@@ -164,6 +181,13 @@ const Diagnosis = () => {
         visible={modalVisible} 
         onHide={() => setModalVisible(false)} 
         onSuccess={loadPatients} 
+      />
+
+      {/* Detail Modal Component */}
+      <DiagnosisDetail
+        visible={detailVisible}
+        patientId={selectedPatientId}
+        onHide={() => { setDetailVisible(false); setSelectedPatientId(null); }}
       />
     </div>
   );

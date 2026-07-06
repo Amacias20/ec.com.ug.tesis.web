@@ -43,5 +43,8 @@
   "female": "Femenino",
   "yes": "Sí",
   "no": "No",
-  "viewDetail": "Ver detalle"
+  "viewDetail": "Ver detalle",
+  "evaluationDetail": "Detalle de Evaluación",
+  "patientInfo": "Información del Paciente",
+  "clinicalData": "Datos Clínicos Ingresados"
 }

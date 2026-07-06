@@ -1,0 +1,184 @@
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { getPatient, PatientDetail } from 'services/diagnosisApi';
+import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import { ProgressBar } from 'primereact/progressbar';
+import { Tag } from 'primereact/tag';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { ProgressSpinner } from 'primereact/progressspinner';
+
+interface DiagnosisDetailProps {
+  visible: boolean;
+  patientId: string | null;
+  onHide: () => void;
+}
+
+const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) => {
+  const { t } = useTranslation(['diagnosis', 'common']);
+  const { getAbbr, getName } = useDiseaseLabel();
+
+  const [detail, setDetail] = useState<PatientDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (visible && patientId) {
+      loadDetail();
+    } else {
+      setDetail(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, patientId]);
+
+  const loadDetail = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getPatient(patientId!);
+      setDetail(data);
+    } catch (e) {
+      setError(t('common:apiError'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --- Modal Templates ---
+  const probabilityBodyModal = (row: { probability: number }) => (
+    <div className="flex align-items-center gap-3">
+      <ProgressBar value={Math.round(row.probability * 100)} showValue={false} style={{ height: '10px', flex: 1, borderRadius: '10px' }} className="border-round-xl overflow-hidden shadow-1" color={row.probability > 0.5 ? 'var(--red-500)' : 'var(--teal-500)'} />
+      <span className="text-sm font-bold w-3rem text-right text-700">{(row.probability * 100).toFixed(1)}%</span>
+    </div>
+  );
+
+  const statusBodyModal = (row: { is_positive: boolean }) => (
+    <Tag
+      value={row.is_positive ? t('common:positive') : t('common:negative')}
+      severity={row.is_positive ? 'danger' : 'success'}
+      className="text-xs px-3 py-2 font-bold border-round-2xl shadow-1 uppercase tracking-wide"
+    />
+  );
+
+  const diseaseBodyModal = (row: { disease_name: string }) => (
+    <span>
+      <strong>{getAbbr(row.disease_name)}</strong> — {getName(row.disease_name)}
+    </span>
+  );
+
+  const dialogFooter = (
+    <div className="flex justify-content-end gap-2 border-top-1 surface-border pt-4">
+      <Button label={t('diagnosis:close')} icon="pi pi-times" onClick={onHide} className="p-button-text text-600 font-bold" />
+    </div>
+  );
+
+  return (
+    <Dialog 
+      visible={visible} 
+      style={{ width: '90vw', maxWidth: '1000px' }} 
+      header={<div className="text-2xl font-bold text-800"><i className="pi pi-file-medical mr-2 text-primary"></i>{t('diagnosis:evaluationDetail')}</div>} 
+      modal 
+      onHide={onHide} 
+      footer={dialogFooter} 
+      className="p-fluid"
+    >
+      {loading ? (
+        <div className="flex flex-column align-items-center justify-content-center p-5">
+          <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="4" />
+          <p className="text-600 mt-3 font-semibold">Cargando detalles...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center p-5 text-red-500">
+          <i className="pi pi-exclamation-circle text-5xl mb-3"></i>
+          <h3 className="m-0">{error}</h3>
+        </div>
+      ) : detail ? (
+        <div className="pt-3">
+          
+          {/* Patient Info Card */}
+          <div className="bg-surface-50 p-4 border-round-xl border-1 surface-border mb-4">
+            <h3 className="m-0 mb-3 text-700 border-bottom-1 surface-border pb-2 flex align-items-center gap-2">
+              <i className="pi pi-user"></i> {t('diagnosis:patientInfo')}
+            </h3>
+            <div className="grid">
+              <div className="col-12 md:col-6 lg:col-3 mb-2">
+                <span className="text-500 text-sm block mb-1">{t('diagnosis:colName')}</span>
+                <span className="font-bold text-800">{detail.first_name} {detail.last_name}</span>
+              </div>
+              <div className="col-12 md:col-6 lg:col-3 mb-2">
+                <span className="text-500 text-sm block mb-1">{t('diagnosis:colAge')}</span>
+                <span className="font-bold text-800">{detail.age}</span>
+              </div>
+              <div className="col-12 md:col-6 lg:col-3 mb-2">
+                <span className="text-500 text-sm block mb-1">{t('diagnosis:colGender')}</span>
+                <span className="font-bold text-800">{detail.gender === 1 ? t('diagnosis:male') : t('diagnosis:female')}</span>
+              </div>
+              <div className="col-12 md:col-6 lg:col-3 mb-2">
+                <span className="text-500 text-sm block mb-1">{t('diagnosis:colDate')}</span>
+                <span className="font-bold text-800">
+                  {new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(detail.created_at))}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Biomarkers Card */}
+          <div className="bg-white p-4 border-round-xl border-1 surface-border mb-4 shadow-1">
+            <h3 className="m-0 mb-3 text-700 border-bottom-1 surface-border pb-2 flex align-items-center gap-2">
+              <i className="pi pi-list"></i> {t('diagnosis:clinicalData')}
+            </h3>
+            <div className="grid">
+              {[
+                { label: 'ESR', val: detail.esr }, { label: 'CRP', val: detail.crp },
+                { label: 'RF', val: detail.rf }, { label: 'Anti-CCP', val: detail.anti_ccp },
+                { label: 'C3', val: detail.c3 }, { label: 'C4', val: detail.c4 }
+              ].map(item => (
+                <div key={item.label} className="col-6 md:col-4 lg:col-2 mb-2">
+                  <span className="text-500 text-xs font-semibold uppercase block mb-1">{item.label}</span>
+                  <span className="font-bold text-800">{item.val ?? '-'}</span>
+                </div>
+              ))}
+              {[
+                { label: 'HLA-B27', val: detail.hla_b27 }, { label: 'ANA', val: detail.ana },
+                { label: 'Anti-Ro', val: detail.anti_ro }, { label: 'Anti-La', val: detail.anti_la },
+                { label: 'Anti-dsDNA', val: detail.anti_dsdna }, { label: 'Anti-Sm', val: detail.anti_sm }
+              ].map(item => (
+                <div key={item.label} className="col-6 md:col-4 lg:col-2 mb-2">
+                  <span className="text-500 text-xs font-semibold uppercase block mb-1">{item.label}</span>
+                  <span className="font-bold text-800">{item.val === 1 ? t('common:positive') : item.val === 0 ? t('common:negative') : '-'}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Results Section */}
+          <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3 mt-5">
+              <h2 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
+                <div className="bg-emerald-100 text-emerald-600 p-2 border-round-md"><i className="pi pi-check-circle"></i></div>
+                {t('diagnosis:results')}
+              </h2>
+          </div>
+          
+          {detail.overlap_syndrome_detected && (
+            <div className="bg-orange-50 border-left-3 border-orange-500 text-orange-700 p-3 mb-4 border-round-right-lg shadow-1 flex align-items-center gap-2">
+               <i className="pi pi-exclamation-triangle text-xl"></i>
+               <span className="font-semibold">{t('diagnosis:overlapSyndrome')}</span>
+            </div>
+          )}
+
+          <DataTable value={detail.predictions} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-1 surface-border border-round-xl overflow-hidden mb-4 shadow-1">
+            <Column header={t('diagnosis:colDisease')} body={diseaseBodyModal} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" bodyClassName="text-800" />
+            <Column header={t('diagnosis:colProbability')} body={probabilityBodyModal} style={{ minWidth: '220px' }} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />
+            <Column header={t('diagnosis:colDiagnosis')} body={statusBodyModal} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />
+            <Column field="threshold_used" header={t('diagnosis:colThreshold')} body={(r) => <span className="text-500 font-bold bg-surface-100 px-2 py-1 border-round">{r.threshold_used.toFixed(3)}</span>} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />
+          </DataTable>
+
+        </div>
+      ) : null}
+    </Dialog>
+  );
+};
+
+export default DiagnosisDetail;
