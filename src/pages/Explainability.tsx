@@ -53,9 +53,21 @@ const Explainability = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-1">{t('explainability:title')}</h1>
-      <p className="text-color-secondary mb-4">{t('explainability:subtitle')}</p>
+    <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div className="relative border-round-3xl overflow-hidden shadow-4" style={{ background: 'linear-gradient(135deg, #0284c7 0%, #3b82f6 100%)', color: 'white', padding: '3rem 2rem' }}>
+        <div className="absolute opacity-20" style={{ right: '-2%', top: '-20%', transform: 'rotate(15deg)' }}>
+          <i className="pi pi-bolt" style={{ fontSize: '15rem' }}></i>
+        </div>
+        <div className="relative z-1 flex align-items-center gap-4">
+          <div className="bg-white-alpha-20 backdrop-blur border-circle p-4 flex align-items-center justify-content-center shadow-2 border-1 border-white-alpha-30">
+            <i className="pi pi-eye text-5xl text-white"></i>
+          </div>
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold m-0 mb-2">{t('explainability:title')}</h1>
+            <p className="m-0 text-xl text-blue-50 font-medium">{t('explainability:subtitle')}</p>
+          </div>
+        </div>
+      </div>
       <Accordion multiple activeIndex={[0]}>
         {Object.entries(data).map(([disease, features]) => (
           <AccordionTab key={disease} header={`${getAbbr(disease)} — ${getName(disease)}`}>
