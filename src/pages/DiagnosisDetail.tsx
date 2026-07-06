@@ -47,9 +47,9 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
   };
 
   // --- Modal Templates ---
-  const probabilityBodyModal = (row: { probability: number }) => (
+  const probabilityBodyModal = (row: { probability: number; is_positive: boolean }) => (
     <div className="flex align-items-center gap-3">
-      <ProgressBar value={Math.round(row.probability * 100)} showValue={false} style={{ height: '10px', flex: 1, borderRadius: '10px' }} className="border-round-xl overflow-hidden shadow-1" color={row.probability > 0.5 ? 'var(--red-500)' : 'var(--teal-500)'} />
+      <ProgressBar value={Math.round(row.probability * 100)} showValue={false} style={{ height: '10px', flex: 1, borderRadius: '10px' }} className="border-round-xl overflow-hidden shadow-1" color={row.is_positive ? 'var(--red-500)' : 'var(--teal-500)'} />
       <span className="text-sm font-bold w-3rem text-right text-700">{(row.probability * 100).toFixed(1)}%</span>
     </div>
   );
