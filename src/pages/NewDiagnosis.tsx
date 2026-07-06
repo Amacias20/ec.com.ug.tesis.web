@@ -172,8 +172,20 @@ const NewDiagnosis = ({ visible, onHide, onSuccess }: NewDiagnosisProps) => {
     </div>
   );
 
+  const dialogHeader = (
+    <div className="flex align-items-center gap-3 pt-2 pl-2">
+      <div className="flex align-items-center justify-content-center border-round-xl shadow-1" style={{ width: '3.2rem', height: '3.2rem', background: 'linear-gradient(135deg, var(--blue-500) 0%, var(--blue-400) 100%)' }}>
+        <i className="pi pi-plus text-white text-xl"></i>
+      </div>
+      <div className="flex flex-column">
+        <span className="text-2xl font-bold text-800 line-height-2">{t('diagnosis:newEvaluation')}</span>
+        <span className="text-500 text-sm font-medium">Completar formulario clínico</span>
+      </div>
+    </div>
+  );
+
   return (
-    <Dialog visible={visible} style={{ width: '90vw', maxWidth: '1000px' }} header={t('diagnosis:newEvaluation')} modal onHide={handleClose} footer={dialogFooter} className="p-fluid">
+    <Dialog visible={visible} style={{ width: '90vw', maxWidth: '1000px' }} header={dialogHeader} modal draggable={false} resizable={false} blockScroll={true} onHide={handleClose} footer={dialogFooter} className="p-fluid">
       <Toast ref={toast} />
       {!result ? (
         /* --- FORM VIEW --- */

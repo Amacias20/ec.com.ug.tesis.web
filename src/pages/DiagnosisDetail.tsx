@@ -1,14 +1,14 @@
+import { getPatient, PatientDetail } from 'services/diagnosisApi';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPatient, PatientDetail } from 'services/diagnosisApi';
-import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface DiagnosisDetailProps {
   visible: boolean;
@@ -74,12 +74,27 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
     </div>
   );
 
+  const dialogHeader = (
+    <div className="flex align-items-center gap-3 pt-2 pl-2">
+      <div className="flex align-items-center justify-content-center border-round-xl shadow-1" style={{ width: '3.2rem', height: '3.2rem', background: 'linear-gradient(135deg, var(--teal-500) 0%, var(--teal-400) 100%)' }}>
+        <i className="pi pi-file text-white text-xl"></i>
+      </div>
+      <div className="flex flex-column">
+        <span className="text-2xl font-bold text-800 line-height-2">{t('diagnosis:evaluationDetail')}</span>
+        <span className="text-500 text-sm font-medium">Resultados y datos clínicos registrados</span>
+      </div>
+    </div>
+  );
+
   return (
     <Dialog 
       visible={visible} 
       style={{ width: '90vw', maxWidth: '1000px' }} 
-      header={<div className="text-2xl font-bold text-800"><i className="pi pi-file-medical mr-2 text-primary"></i>{t('diagnosis:evaluationDetail')}</div>} 
+      header={dialogHeader} 
       modal 
+      draggable={false}
+      resizable={false}
+      blockScroll={true}
       onHide={onHide} 
       footer={dialogFooter} 
       className="p-fluid"

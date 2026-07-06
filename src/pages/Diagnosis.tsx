@@ -117,7 +117,7 @@ const Diagnosis = () => {
   return (
     <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
       <Toast ref={toast} />
-      <ConfirmDialog style={{ width: '450px' }} className="shadow-4" />
+      <ConfirmDialog style={{ width: '450px' }} className="shadow-4" draggable={false} resizable={false} blockScroll={true} />
       
       {/* Premium Hero Section */}
       <div className="relative border-round-3xl overflow-hidden shadow-4" style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', color: 'white', padding: '3rem 2rem' }}>
