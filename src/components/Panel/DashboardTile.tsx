@@ -19,6 +19,8 @@ export const DashboardTile: React.FC<DashboardTileProps> = ({
     return (
         <div
             style={{
+                flex: '1 1 0',
+                minWidth: '200px',
                 borderRadius: '10px',
                 padding: '25px',
                 backgroundColor,
@@ -33,12 +35,10 @@ export const DashboardTile: React.FC<DashboardTileProps> = ({
             className="tile-title"
                 data-pr-tooltip={title}
                 style={{
-                    fontSize: 'clamp(14px, 2vw, 18px)',
-                    flex: 1,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth:'80%',
+                    fontSize: 'clamp(14px, 1vw, 16px)',
+                    lineHeight: '1.2',
+                    paddingRight: '30px', // leave room for icon
+                    minHeight: '40px'
                 }}
             >
                 {title}
