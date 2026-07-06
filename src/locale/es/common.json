@@ -13,5 +13,5 @@
   "female": "Femenino",
   "placeholderEmpty": "—",
   "apiError": "Error al consultar la API",
-  "footer": "Proyecto de Titulación — Diagnóstico Multi-Enfermedad Autoinmune © {{year}}"
+  "footer": "Proyecto de Titulación — Diagnóstico Multi-etiqueta Autoinmune © {{year}}"
 }

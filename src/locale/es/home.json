@@ -1,5 +1,5 @@
 {
-  "title": "Diagnóstico Multi-Enfermedad Autoinmune",
+  "title": "Diagnóstico Multi-etiqueta Autoinmune",
   "subtitle": "Clasificación multi-etiqueta de seis enfermedades reumáticas mediante aprendizaje profundo.",
   "backendOffline": "No se pudo conectar con el backend. Ejecuta: uvicorn main:app --reload --port 8000",
   "backendUnavailable": "Backend no disponible",
