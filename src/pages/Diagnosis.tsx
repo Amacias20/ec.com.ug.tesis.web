@@ -8,10 +8,11 @@ import DiagnosisDetail from './DiagnosisDetail';
 import { useTranslation } from 'react-i18next';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
+import ReportViewer from './ReportViewer';
 import NewDiagnosis from './NewDiagnosis';
 import { Toast } from 'primereact/toast';
 import { Tag } from 'primereact/tag';
-import ReportViewer from './ReportViewer';
+import * as XLSX from 'xlsx';
 
 const Diagnosis = () => {
   const { t } = useTranslation(['diagnosis', 'common']);
@@ -70,6 +71,46 @@ const Diagnosis = () => {
       loadPatients();
     } catch {
       toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Could not delete record' });
+    }
+  };
+
+  const exportToExcel = async () => {
+    setLoadingTable(true);
+    try {
+      let allItems: PatientRecord[] = [];
+      let currentPage = 1;
+      let totalPages = 1;
+
+      // Loop to fetch all records bypassing the 100-limit per page
+      do {
+        const data = await getPatients(currentPage, 100);
+        allItems = [...allItems, ...data.items];
+        totalPages = data.pages;
+        currentPage++;
+      } while (currentPage <= totalPages);
+
+      const exportData = allItems.map((p) => ({
+        Fecha: new Intl.DateTimeFormat('es-ES', {
+          year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+        }).format(new Date(p.created_at)),
+        Paciente: `${p.first_name} ${p.last_name}`,
+        Edad: p.age,
+        'Género': p.gender === 1 ? t('diagnosis:male') : t('diagnosis:female'),
+        'Diagnóstico Principal': p.primary_diagnosis ? getName(p.primary_diagnosis) : 'No determinado',
+        'Probabilidad': p.primary_probability !== null ? `${(p.primary_probability * 100).toFixed(1)}%` : '-',
+        'Solapamiento': p.overlap_syndrome_detected ? t('diagnosis:yes') : t('diagnosis:no')
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Pacientes');
+      XLSX.writeFile(workbook, 'Historial_Pacientes.xlsx');
+
+      toast.current?.show({ severity: 'success', summary: 'Exportación Exitosa', detail: 'El archivo Excel ha sido descargado.' });
+    } catch (err) {
+      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se pudo exportar a Excel' });
+    } finally {
+      setLoadingTable(false);
     }
   };
 
@@ -133,17 +174,24 @@ const Diagnosis = () => {
               <p className="m-0 text-xl text-emerald-50 font-medium">{t('diagnosis:historySubtitle')}</p>
             </div>
           </div>
-          <Button
-            label="Nueva Evaluación"
-            icon="pi pi-plus"
-            className="p-button-rounded bg-white border-none font-bold shadow-3"
-            style={{ color: '#059669', padding: '0.75rem 1.5rem' }}
-            onClick={() => setModalVisible(true)}
-          />
+          <div className="flex gap-3">
+            <Button
+              label="Exportar a Excel"
+              icon="pi pi-file-excel"
+              className="p-button-rounded p-button-outlined bg-white font-bold shadow-3"
+              style={{ color: '#10b981', borderColor: 'transparent', padding: '0.75rem 1.5rem' }}
+              onClick={exportToExcel}
+            />
+            <Button
+              label="Nueva Evaluación"
+              icon="pi pi-plus"
+              className="p-button-rounded bg-white border-none font-bold shadow-3"
+              style={{ color: '#059669', padding: '0.75rem 1.5rem' }}
+              onClick={() => setModalVisible(true)}
+            />
+          </div>
         </div>
       </div>
-
-      {/* Main Table View */}
       <div className="bg-white p-4 border-round-2xl shadow-2 border-1 surface-border">
         <DataTable
           value={patients}
@@ -175,22 +223,16 @@ const Diagnosis = () => {
           <Column header={t('diagnosis:colActions')} body={actionBody} headerClassName="bg-surface-50 text-700 border-bottom-1 surface-border" />
         </DataTable>
       </div>
-
-      {/* Extracted Modal Component */}
       <NewDiagnosis
         visible={modalVisible}
         onHide={() => setModalVisible(false)}
         onSuccess={loadPatients}
       />
-
-      {/* Detail Modal Component */}
       <DiagnosisDetail
         visible={detailVisible}
         patientId={selectedPatientId}
         onHide={() => { setDetailVisible(false); setSelectedPatientId(null); }}
       />
-
-      {/* Report Viewer Component */}
       <ReportViewer
         visible={reportVisible}
         patientId={selectedPatientId}
