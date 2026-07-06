@@ -1,29 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { getPatients, deletePatient, PatientRecord } from 'services/diagnosisApi';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
+import { ProgressBar } from 'primereact/progressbar';
+import { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
+import DiagnosisDetail from './DiagnosisDetail';
+import { useTranslation } from 'react-i18next';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import { ProgressBar } from 'primereact/progressbar';
-import { Tag } from 'primereact/tag';
-import { Toast } from 'primereact/toast';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import NewDiagnosis from './NewDiagnosis';
-import DiagnosisDetail from './DiagnosisDetail';
+import { Toast } from 'primereact/toast';
+import { Tag } from 'primereact/tag';
 
 const Diagnosis = () => {
   const { t } = useTranslation(['diagnosis', 'common']);
-  const { getAbbr } = useDiseaseLabel();
+  const { getAbbr, getName } = useDiseaseLabel();
   const toast = useRef<Toast>(null);
-
-  // Table state
   const [patients, setPatients] = useState<PatientRecord[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [loadingTable, setLoadingTable] = useState(false);
   const [lazyParams, setLazyParams] = useState({ first: 0, rows: 10, page: 1 });
-
-  // Modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
@@ -90,8 +86,8 @@ const Diagnosis = () => {
   const primaryDiagBody = (rowData: PatientRecord) => {
     if (!rowData.primary_diagnosis) return '-';
     return (
-      <span className="font-bold text-primary">
-        {getAbbr(rowData.primary_diagnosis)}
+      <span>
+        <strong>{getAbbr(rowData.primary_diagnosis)}</strong> — {getName(rowData.primary_diagnosis)}
       </span>
     );
   };
@@ -118,7 +114,7 @@ const Diagnosis = () => {
     <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
       <Toast ref={toast} />
       <ConfirmDialog style={{ width: '450px' }} className="shadow-4" draggable={false} resizable={false} blockScroll={true} />
-      
+
       {/* Premium Hero Section */}
       <div className="relative border-round-3xl overflow-hidden shadow-4" style={{ background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', color: 'white', padding: '3rem 2rem' }}>
         <div className="absolute opacity-20" style={{ right: '-2%', top: '-20%', transform: 'rotate(15deg)' }}>
@@ -134,24 +130,24 @@ const Diagnosis = () => {
               <p className="m-0 text-xl text-emerald-50 font-medium">{t('diagnosis:historySubtitle')}</p>
             </div>
           </div>
-          <Button 
-            label="Nueva Evaluación" 
-            icon="pi pi-plus" 
-            className="p-button-rounded bg-white border-none font-bold shadow-3" 
+          <Button
+            label="Nueva Evaluación"
+            icon="pi pi-plus"
+            className="p-button-rounded bg-white border-none font-bold shadow-3"
             style={{ color: '#059669', padding: '0.75rem 1.5rem' }}
-            onClick={() => setModalVisible(true)} 
+            onClick={() => setModalVisible(true)}
           />
         </div>
       </div>
 
       {/* Main Table View */}
       <div className="bg-white p-4 border-round-2xl shadow-2 border-1 surface-border">
-        <DataTable 
-          value={patients} 
-          lazy 
-          paginator 
+        <DataTable
+          value={patients}
+          lazy
+          paginator
           first={lazyParams.first}
-          rows={lazyParams.rows} 
+          rows={lazyParams.rows}
           totalRecords={totalRecords}
           onPage={onPage}
           loading={loadingTable}
@@ -178,10 +174,10 @@ const Diagnosis = () => {
       </div>
 
       {/* Extracted Modal Component */}
-      <NewDiagnosis 
-        visible={modalVisible} 
-        onHide={() => setModalVisible(false)} 
-        onSuccess={loadPatients} 
+      <NewDiagnosis
+        visible={modalVisible}
+        onHide={() => setModalVisible(false)}
+        onSuccess={loadPatients}
       />
 
       {/* Detail Modal Component */}
