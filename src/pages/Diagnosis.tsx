@@ -127,7 +127,7 @@ const Diagnosis = () => {
         <div className="relative z-1 flex align-items-center justify-content-between flex-wrap gap-4">
           <div className="flex align-items-center gap-4">
             <div className="bg-white-alpha-20 backdrop-blur border-circle p-4 flex align-items-center justify-content-center shadow-2 border-1 border-white-alpha-30">
-              <i className="pi pi-file-medical text-5xl text-white"></i>
+              <i className="pi pi-folder-open text-5xl text-white"></i>
             </div>
             <div>
               <h1 className="text-4xl md:text-5xl font-extrabold m-0 mb-2">{t('diagnosis:patientHistory')}</h1>
@@ -135,9 +135,10 @@ const Diagnosis = () => {
             </div>
           </div>
           <Button 
-            label={t('diagnosis:newEvaluation')} 
+            label="Nueva Evaluación" 
             icon="pi pi-plus" 
-            className="p-button-rounded bg-white text-emerald-600 border-none font-bold px-4 py-3 shadow-3 hover:shadow-4 hover:bg-emerald-50 transition-all text-lg" 
+            className="p-button-rounded bg-white border-none font-bold shadow-3" 
+            style={{ color: '#059669', padding: '0.75rem 1.5rem' }}
             onClick={() => setModalVisible(true)} 
           />
         </div>
