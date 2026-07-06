@@ -268,7 +268,7 @@ const NewDiagnosis = ({ visible, onHide, onSuccess }: NewDiagnosisProps) => {
               <span className="text-sm font-semibold">{t('diagnosis:modelUsed', { name: result.model_used })}</span>
             </div>
 
-            <DataTable value={result.predictions} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-1 surface-border border-round-xl overflow-hidden mb-4">
+            <DataTable value={[...result.predictions].sort((a, b) => a.is_positive === b.is_positive ? b.probability - a.probability : a.is_positive ? -1 : 1)} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-1 surface-border border-round-xl overflow-hidden mb-4">
               <Column header={t('diagnosis:colDisease')} body={diseaseBodyModal} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" bodyClassName="text-800" />
               <Column header={t('diagnosis:colProbability')} body={probabilityBodyModal} style={{ minWidth: '220px' }} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />
               <Column header={t('diagnosis:colDiagnosis')} body={statusBodyModal} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />
