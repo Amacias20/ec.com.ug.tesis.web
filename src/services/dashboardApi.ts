@@ -39,3 +39,8 @@ export async function getPredictionsTimeline(): Promise<TimelinePoint[]> {
   const { data } = await client.get<TimelinePoint[]>('/dashboard/timeline');
   return data;
 }
+
+export async function getBiomarkersFrequency(): Promise<Record<string, number>> {
+  const { data } = await client.get<Record<string, number>>('/dashboard/biomarkers-frequency');
+  return data;
+}

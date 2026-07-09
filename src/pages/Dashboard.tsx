@@ -1,4 +1,4 @@
-import { getDashboardSummary, getDiseaseDistribution, getPredictionsTimeline, getDiseaseByGender, DashboardSummary } from 'services/dashboardApi';
+import { getDashboardSummary, getDiseaseDistribution, getPredictionsTimeline, getDiseaseByGender, getBiomarkersFrequency, DashboardSummary } from 'services/dashboardApi';
 import { DashboardCard } from 'components/Panel/DashboardCard';
 import { DashboardTile } from 'components/Panel/DashboardTile';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [distribution, setDistribution] = useState<Record<string, number> | null>(null);
   const [genderDistribution, setGenderDistribution] = useState<Record<string, { Femenino: number; Masculino: number }> | null>(null);
   const [timeline, setTimeline] = useState<{ date: string; count: number }[] | null>(null);
+  const [biomarkers, setBiomarkers] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,16 +26,18 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       try {
-        const [summaryData, distributionData, timelineData, genderData] = await Promise.all([
+        const [summaryData, distributionData, timelineData, genderData, biomarkersData] = await Promise.all([
           getDashboardSummary(),
           getDiseaseDistribution(),
           getPredictionsTimeline(),
           getDiseaseByGender(),
+          getBiomarkersFrequency(),
         ]);
         setSummary(summaryData);
         setDistribution(distributionData);
         setTimeline(timelineData);
         setGenderDistribution(genderData);
+        setBiomarkers(biomarkersData);
       } catch {
         setError(t('dashboard:loadError'));
       } finally {
@@ -53,7 +56,7 @@ const Dashboard = () => {
     );
   }
 
-  if (error || !summary || !distribution || !timeline || !genderDistribution) {
+  if (error || !summary || !distribution || !timeline || !genderDistribution || !biomarkers) {
     return <Message severity="warn" className="m-4" text={error || t('common:noData')} />;
   }
 
@@ -91,6 +94,36 @@ const Dashboard = () => {
     xAxis: { categories: timeline.map((point) => moment(point.date).format('DD MMM')) },
     yAxis: { title: { text: t('dashboard:chartTimelineYAxis') }, allowDecimals: false },
     series: [{ type: 'spline', name: t('dashboard:chartTimelineSeries'), data: timeline.map((point) => point.count) }],
+    credits: { enabled: false },
+    legend: { enabled: false },
+  };
+
+  const overlapOptions: Highcharts.Options = {
+    chart: { type: 'pie', height: 320 },
+    title: { text: 'Casos de Solapamiento' },
+    plotOptions: {
+      pie: {
+        innerSize: '60%',
+        dataLabels: { enabled: true, format: '<b>{point.name}</b>: {point.y}' }
+      }
+    },
+    series: [{
+      type: 'pie',
+      name: 'Pacientes',
+      data: [
+        { name: 'Solapamiento', y: summary.overlap_syndrome_count, color: '#f97316' },
+        { name: 'Diagnóstico Único', y: summary.total_predictions - summary.overlap_syndrome_count, color: '#14b8a6' }
+      ]
+    }],
+    credits: { enabled: false }
+  };
+
+  const biomarkersOptions: Highcharts.Options = {
+    chart: { type: 'bar', height: 320 },
+    title: { text: 'Frecuencia de Biomarcadores' },
+    xAxis: { categories: Object.keys(biomarkers) },
+    yAxis: { title: { text: 'Casos Positivos' }, allowDecimals: false },
+    series: [{ type: 'bar', name: 'Casos Positivos', data: Object.values(biomarkers), color: '#8b5cf6' }],
     credits: { enabled: false },
     legend: { enabled: false },
   };
@@ -146,15 +179,25 @@ const Dashboard = () => {
       <div className="grid">
         <div className="col-12 lg:col-4">
           <DashboardCard>
-            <HighchartsReact highcharts={Highcharts} options={distributionOptions} />
+            <HighchartsReact highcharts={Highcharts} options={overlapOptions} />
           </DashboardCard>
         </div>
         <div className="col-12 lg:col-4">
           <DashboardCard>
-            <HighchartsReact highcharts={Highcharts} options={genderOptions} />
+            <HighchartsReact highcharts={Highcharts} options={biomarkersOptions} />
           </DashboardCard>
         </div>
         <div className="col-12 lg:col-4">
+          <DashboardCard>
+            <HighchartsReact highcharts={Highcharts} options={distributionOptions} />
+          </DashboardCard>
+        </div>
+        <div className="col-12 lg:col-6">
+          <DashboardCard>
+            <HighchartsReact highcharts={Highcharts} options={genderOptions} />
+          </DashboardCard>
+        </div>
+        <div className="col-12 lg:col-6">
           <DashboardCard>
             <HighchartsReact highcharts={Highcharts} options={timelineOptions} />
           </DashboardCard>
