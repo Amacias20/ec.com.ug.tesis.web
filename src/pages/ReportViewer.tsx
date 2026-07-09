@@ -5,7 +5,6 @@ import { getPatient, PatientDetail } from 'services/diagnosisApi';
 import { useTranslation } from 'react-i18next';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
-import { Tag } from 'primereact/tag';
 
 interface ReportViewerProps {
   visible: boolean;
@@ -71,7 +70,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
         </div>
       ) : (
         <div className="flex justify-content-center p-4 print-p-0 print-bg-white print-hide-scroll">
-          {/* A4 Sheet Container */}
           <div
             ref={reportRef}
             className="bg-white shadow-4 border-round p-6 print-shadow-none print-p-0 print-m-0 w-full"
@@ -82,7 +80,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
               color: '#000',
             }}
           >
-            {/* Report Header */}
             <div className="flex justify-content-between align-items-end border-bottom-2 border-300 pb-4 mb-4">
               <div>
                 <h1 className="m-0 text-3xl font-bold text-teal-700 print-text-black">Reporte de Evaluación</h1>
@@ -93,8 +90,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 <p className="m-0"><strong>ID Paciente:</strong> {detail.id.split('-')[0].toUpperCase()}</p>
               </div>
             </div>
-
-            {/* Patient Info */}
             <div className="surface-100 p-3 border-round mb-4 flex flex-wrap gap-4 print-bg-white print-border">
               <div className="flex-1">
                 <p className="m-0 text-500 text-sm print-text-black">Paciente</p>
@@ -109,8 +104,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 <p className="m-0 font-bold text-lg">{detail.gender === 1 ? 'Masculino' : 'Femenino'}</p>
               </div>
             </div>
-
-            {/* Clinical Data */}
             <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 print-text-black">Biomarcadores Clínicos</h3>
             <div className="grid mb-4">
               {[
@@ -135,8 +128,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 </div>
               ))}
             </div>
-
-            {/* AI Results */}
             <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 mt-5 print-text-black">Resultados de IA</h3>
             <div className="surface-50 p-3 border-round mb-4 border-1 surface-border print-bg-white print-border-black">
               <div className="flex justify-content-between align-items-center mb-3">
@@ -177,8 +168,35 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 ))}
               </tbody>
             </table>
-
-            {/* Footer */}
+            <div className="mt-5 mb-4">
+              <h4 className="text-teal-700 m-0 mb-3 print-text-black">Gráfica de Probabilidades</h4>
+              <div className="surface-50 p-4 border-round border-1 surface-border print-bg-white print-border-black">
+                <div className="flex flex-column gap-3">
+                  {detail.predictions.map((pred, idx) => (
+                    <div key={idx} className="flex align-items-center">
+                      <div className="w-4 md:w-3 font-semibold text-sm text-700 print-text-black">
+                        {getAbbr(pred.disease_name)}
+                      </div>
+                      <div className="w-8 md:w-9 flex align-items-center gap-3">
+                        <div className="flex-grow-1 surface-300 border-round h-1rem overflow-hidden print-border-black border-1 border-transparent" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+                          <div 
+                            className={`h-full border-round ${pred.is_positive ? 'bg-teal-500' : 'bg-500'}`} 
+                            style={{ 
+                              width: `${(pred.probability * 100).toFixed(1)}%`,
+                              WebkitPrintColorAdjust: 'exact',
+                              printColorAdjust: 'exact'
+                            }}
+                          />
+                        </div>
+                        <div className="text-sm font-bold text-right print-text-black" style={{ minWidth: '3.5rem' }}>
+                          {(pred.probability * 100).toFixed(1)}%
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="mt-6 pt-4 border-top-1 border-200 text-center text-sm text-500 print-text-black">
               Este documento es generado por un sistema de apoyo diagnóstico basado en Inteligencia Artificial y no sustituye el criterio médico profesional.
             </div>

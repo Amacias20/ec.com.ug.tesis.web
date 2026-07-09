@@ -113,6 +113,18 @@ const Home = () => {
             <Button label={t('viewImportance')} icon="pi pi-chart-bar" className="p-button-rounded p-button-warning w-full p-3 font-bold" onClick={() => navigate('/explainability')} />
           </Card>
         </div>
+        <div className="col-12 lg:col flex">
+          <Card className="w-full border-round-xl shadow-2 hover:shadow-6 transition-all transition-duration-300 border-none">
+            <div className="flex align-items-center justify-content-between mb-4">
+              <h2 className="m-0 text-2xl font-semibold text-800">Glosario</h2>
+              <div className="flex align-items-center justify-content-center bg-green-100 border-circle p-3 text-green-600">
+                <i className="pi pi-book text-2xl"></i>
+              </div>
+            </div>
+            <p className="text-600 line-height-3 text-lg mb-4">Consulta la definición y utilidad clínica de los diferentes marcadores inmunológicos.</p>
+            <Button label="Ver Glosario" icon="pi pi-list" className="p-button-rounded p-button-success w-full p-3 font-bold" onClick={() => navigate('/glossary')} />
+          </Card>
+        </div>
       </div>
       {modelInfo && (
         <Card className="border-round-xl shadow-2 border-none">
