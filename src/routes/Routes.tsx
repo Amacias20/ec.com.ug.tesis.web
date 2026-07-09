@@ -6,6 +6,7 @@ const Diagnosis = lazy(() => import('pages/Diagnosis'));
 const ModelInfo = lazy(() => import('pages/ModelInfo'));
 const Explainability = lazy(() => import('pages/Explainability'));
 const Dashboard = lazy(() => import('pages/Dashboard'));
+const Glossary = lazy(() => import('pages/Glossary'));
 
 export const routes: IRoute[] = [
   { path: '/', key: 'Home', pathLabel: 'menu:home', component: Home },
@@ -13,4 +14,5 @@ export const routes: IRoute[] = [
   { path: '/diagnosis', key: 'Diagnosis', pathLabel: 'menu:diagnosis', component: Diagnosis },
   { path: '/model-info', key: 'ModelInfo', pathLabel: 'menu:modelInfo', component: ModelInfo },
   { path: '/explainability', key: 'Explainability', pathLabel: 'menu:explainability', component: Explainability },
+  { path: '/glossary', key: 'Glossary', pathLabel: 'menu:glossary', component: Glossary },
 ];
