@@ -77,6 +77,7 @@ export interface ExplainabilityResponse {
   attention_weights?: Record<string, number>;
   top_positive_features: Record<string, string[]>;
   top_negative_features: Record<string, string[]>;
+  natural_language_explanation: Record<string, string>;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,6 +119,7 @@ export interface PatientDetail extends PatientRecord {
   c3: number | null;
   c4: number | null;
   predictions: PredictionRecordOut[];
+  natural_language_explanation?: Record<string, string>;
 }
 
 export interface PaginatedPatients {

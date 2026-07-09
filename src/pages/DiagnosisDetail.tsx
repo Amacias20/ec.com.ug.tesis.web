@@ -183,6 +183,26 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
             </div>
           )}
 
+          {detail.natural_language_explanation && Object.keys(detail.natural_language_explanation).length > 0 && (
+             <div className="bg-indigo-50 p-4 border-round-xl border-1 surface-border mb-4 shadow-1">
+                <h3 className="m-0 mb-4 text-indigo-800 flex align-items-center gap-2">
+                  <i className="pi pi-sparkles text-xl text-indigo-500"></i>
+                  Análisis Clínico de IA
+                </h3>
+                <div className="flex flex-column gap-3">
+                  {Object.entries(detail.natural_language_explanation).map(([disease, text]) => (
+                    <div key={disease} className="bg-white p-3 md:p-4 border-round-lg shadow-1 border-left-3 border-indigo-500 hover:shadow-2 transition-shadow">
+                      <div className="flex align-items-center gap-2 mb-2">
+                         <i className="pi pi-verified text-indigo-500 text-xl"></i>
+                         <strong className="text-indigo-900 text-lg">{getName(disease)}</strong>
+                      </div>
+                      <p className="m-0 text-700 line-height-3 text-base">{text}</p>
+                    </div>
+                  ))}
+                </div>
+             </div>
+          )}
+
           <DataTable value={[...detail.predictions].sort((a, b) => a.is_positive === b.is_positive ? b.probability - a.probability : a.is_positive ? -1 : 1)} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-1 surface-border border-round-xl overflow-hidden mb-4 shadow-1">
             <Column header={t('diagnosis:colDisease')} body={diseaseBodyModal} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" bodyClassName="text-800" />
             <Column header={t('diagnosis:colProbability')} body={probabilityBodyModal} style={{ minWidth: '220px' }} headerClassName="text-600 font-bold bg-surface-50 border-bottom-1 surface-border" />

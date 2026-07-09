@@ -277,6 +277,23 @@ const NewDiagnosis = ({ visible, onHide, onSuccess }: NewDiagnosisProps) => {
 
             {explanation && (
               <div className="border-1 surface-border border-round-2xl overflow-hidden shadow-1 mt-4">
+                <div className="bg-indigo-50 p-4 border-bottom-1 surface-border">
+                  <h3 className="m-0 mb-4 text-indigo-800 flex align-items-center gap-2">
+                    <i className="pi pi-sparkles text-xl text-indigo-500"></i>
+                    Análisis Clínico de IA
+                  </h3>
+                  <div className="flex flex-column gap-3">
+                    {Object.entries(explanation.natural_language_explanation || {}).map(([disease, text]) => (
+                      <div key={disease} className="bg-white p-3 md:p-4 border-round-lg shadow-1 border-left-3 border-indigo-500 hover:shadow-2 transition-shadow">
+                        <div className="flex align-items-center gap-2 mb-2">
+                           <i className="pi pi-verified text-indigo-500 text-xl"></i>
+                           <strong className="text-indigo-900 text-lg">{getName(disease)}</strong>
+                        </div>
+                        <p className="m-0 text-700 line-height-3 text-base">{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <TabView className="premium-tabs">
                   <TabPanel header={t('diagnosis:tabShap')} leftIcon="pi pi-chart-bar mr-2 text-primary">
                     <div className="grid p-3 bg-surface-50">
