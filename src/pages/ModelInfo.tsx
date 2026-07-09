@@ -1,5 +1,7 @@
-import { getModelInfo, ModelInfoResponse } from 'services/diagnosisApi';
+import { getModelInfo, ModelInfoResponse, getFeatureImportance } from 'services/diagnosisApi';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import { useDiseaseLabel } from 'hooks/useDiseaseLabel';
 import { DataTable } from 'primereact/datatable';
 import { useTranslation } from 'react-i18next';
@@ -18,16 +20,18 @@ const ModelInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [localThresholds, setLocalThresholds] = useState<Record<string, number>>({});
+  const [featureImp, setFeatureImp] = useState<Record<string, Record<string, number>> | null>(null);
   const [saving, setSaving] = useState(false);
   const toast = useRef<Toast>(null);
 
   useEffect(() => {
-    getModelInfo()
-      .then((data) => {
-        setInfo(data);
+    Promise.all([getModelInfo(), getFeatureImportance()])
+      .then(([infoData, impData]) => {
+        setInfo(infoData);
+        setFeatureImp(impData);
         const initial: Record<string, number> = {};
-        data.label_names.forEach((name, i) => {
-          initial[name] = data.thresholds[i];
+        infoData.label_names.forEach((name, i) => {
+          initial[name] = infoData.thresholds[i];
         });
         setLocalThresholds(initial);
       })
@@ -88,6 +92,16 @@ const ModelInfo = () => {
     }
   };
 
+  const handleResetThresholds = () => {
+    if (!info) return;
+    const defaults: Record<string, number> = {};
+    info.label_names.forEach((name) => {
+      defaults[name] = 0.5;
+    });
+    setLocalThresholds(defaults);
+    toast.current?.show({ severity: 'info', summary: 'Restaurados', detail: 'Se asignó 0.5 a todos. Recuerda guardar los cambios.', life: 3000 });
+  };
+
   const thresholdRows = info.label_names.map((name, i) => ({
     disease: getName(name),
     rawName: name,
@@ -96,6 +110,45 @@ const ModelInfo = () => {
   }));
 
   const metrics = info.metrics?.global;
+  const perLabelMetrics = info.metrics?.per_label;
+
+  const perLabelRows = perLabelMetrics ? Object.keys(perLabelMetrics).map(name => ({
+    disease: getName(name),
+    abbr: getAbbr(name),
+    precision: perLabelMetrics[name].precision,
+    recall: perLabelMetrics[name].recall,
+    f1: perLabelMetrics[name].f1,
+    support: perLabelMetrics[name].support
+  })) : [];
+
+  // Calculate average feature importance across all diseases if available
+  let featureImpOptions: Highcharts.Options | null = null;
+  if (featureImp && Object.keys(featureImp).length > 0) {
+    const avgImp: Record<string, number> = {};
+    const numDiseases = Object.keys(featureImp).length;
+    
+    Object.values(featureImp).forEach(diseaseImp => {
+      Object.entries(diseaseImp).forEach(([feat, val]) => {
+        if (!avgImp[feat]) avgImp[feat] = 0;
+        avgImp[feat] += val;
+      });
+    });
+    
+    const sortedFeatures = Object.keys(avgImp)
+      .map(k => ({ name: k, val: avgImp[k] / numDiseases }))
+      .sort((a, b) => b.val - a.val)
+      .slice(0, 10); // top 10
+
+    featureImpOptions = {
+      chart: { type: 'bar', height: 350 },
+      title: { text: 'Top 10 Características (Importancia Global)' },
+      xAxis: { categories: sortedFeatures.map(f => f.name) },
+      yAxis: { title: { text: 'Importancia Promedio' } },
+      series: [{ type: 'bar', name: 'Importancia', data: sortedFeatures.map(f => f.val), color: '#3b82f6' }],
+      credits: { enabled: false },
+      legend: { enabled: false }
+    };
+  }
 
   return (
     <div className="px-4 py-4 md:px-6 lg:px-8 w-full flex flex-column gap-5" style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -159,13 +212,23 @@ const ModelInfo = () => {
                 <div className="bg-indigo-100 text-indigo-600 p-2 border-round-md"><i className="pi pi-sliders-h"></i></div>
                 {t('modelInfo:thresholdsTitle')}
               </h3>
-              <Button 
-                label={saving ? "Guardando..." : "Guardar Cambios"} 
-                icon={saving ? "pi pi-spin pi-spinner" : "pi pi-save"} 
-                severity="success" 
-                onClick={handleSaveThresholds} 
-                disabled={saving}
-              />
+              <div className="flex gap-2">
+                <Button 
+                  label="Restaurar Defecto" 
+                  icon="pi pi-undo" 
+                  severity="secondary"
+                  outlined
+                  onClick={handleResetThresholds} 
+                  disabled={saving}
+                />
+                <Button 
+                  label={saving ? "Guardando..." : "Guardar Cambios"} 
+                  icon={saving ? "pi pi-spin pi-spinner" : "pi pi-save"} 
+                  severity="success" 
+                  onClick={handleSaveThresholds} 
+                  disabled={saving}
+                />
+              </div>
             </div>
             <Toast ref={toast} />
             <DataTable value={thresholdRows} stripedRows size="large" responsiveLayout="scroll" className="p-datatable-lg border-none">
@@ -231,6 +294,43 @@ const ModelInfo = () => {
                 </span>
               ))}
             </div>
+          </Card>
+        </div>
+      </div>
+      <div className="grid">
+        <div className="col-12 lg:col-6">
+          <Card className="shadow-2 border-none border-round-2xl h-full border-1 surface-border">
+            <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
+              <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
+                <div className="bg-blue-100 text-blue-600 p-2 border-round-md"><i className="pi pi-chart-bar"></i></div>
+                Importancia Global de Características
+              </h3>
+            </div>
+            {featureImpOptions ? (
+              <HighchartsReact highcharts={Highcharts} options={featureImpOptions} />
+            ) : (
+              <div className="text-center p-5 text-500">Datos de importancia no disponibles.</div>
+            )}
+          </Card>
+        </div>
+        <div className="col-12 lg:col-6">
+          <Card className="shadow-2 border-none border-round-2xl h-full border-1 surface-border">
+            <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
+              <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
+                <div className="bg-purple-100 text-purple-600 p-2 border-round-md"><i className="pi pi-table"></i></div>
+                Métricas por Enfermedad
+              </h3>
+            </div>
+            {perLabelRows.length > 0 ? (
+              <DataTable value={perLabelRows} stripedRows size="small" responsiveLayout="scroll" className="p-datatable-sm border-none">
+                <Column field="abbr" header="Enfermedad" headerClassName="text-500 font-semibold bg-transparent" bodyClassName="font-bold text-700" />
+                <Column field="precision" header="Precisión" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.precision * 100).toFixed(1) + '%'} />
+                <Column field="recall" header="Recall" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.recall * 100).toFixed(1) + '%'} />
+                <Column field="f1" header="F1-Score" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.f1 * 100).toFixed(1) + '%'} />
+              </DataTable>
+            ) : (
+              <div className="text-center p-5 text-500">Métricas detalladas no disponibles.</div>
+            )}
           </Card>
         </div>
       </div>
