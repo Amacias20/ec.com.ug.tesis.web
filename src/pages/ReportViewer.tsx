@@ -48,9 +48,9 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
     <div className="flex align-items-center justify-content-between w-full print-hide">
       <div className="flex align-items-center gap-2">
         <i className="pi pi-file-pdf text-red-500 text-2xl"></i>
-        <span className="text-xl font-bold">Visor de Reporte</span>
+        <span className="text-xl font-bold">{t('diagnosis:reportViewer')}</span>
       </div>
-      <Button label="Imprimir PDF" icon="pi pi-print" className="p-button-primary mr-5" onClick={handlePrint} />
+      <Button label={t('diagnosis:printPdf')} icon="pi pi-print" className="p-button-primary mr-5" onClick={handlePrint} />
     </div>
   );
 
@@ -82,29 +82,29 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
           >
             <div className="flex justify-content-between align-items-end border-bottom-2 border-300 pb-4 mb-4">
               <div>
-                <h1 className="m-0 text-3xl font-bold text-teal-700 print-text-black">Reporte de Evaluación</h1>
-                <p className="m-0 text-500 mt-1 print-text-black">Generado por el sistema de IA</p>
+                <h1 className="m-0 text-3xl font-bold text-teal-700 print-text-black">{t('diagnosis:reportTitle')}</h1>
+                <p className="m-0 text-500 mt-1 print-text-black">{t('diagnosis:reportSubtitle')}</p>
               </div>
               <div className="text-right text-sm text-600 print-text-black">
-                <p className="m-0"><strong>Fecha:</strong> {new Date().toLocaleDateString('es-ES')}</p>
-                <p className="m-0"><strong>ID Paciente:</strong> {detail.id.split('-')[0].toUpperCase()}</p>
+                <p className="m-0"><strong>{t('diagnosis:dateLabel')}</strong> {new Date().toLocaleDateString()}</p>
+                <p className="m-0"><strong>{t('diagnosis:patientIdLabel')}</strong> {detail.id.split('-')[0].toUpperCase()}</p>
               </div>
             </div>
             <div className="surface-100 p-3 border-round mb-4 flex flex-wrap gap-4 print-bg-white print-border">
               <div className="flex-1">
-                <p className="m-0 text-500 text-sm print-text-black">Paciente</p>
+                <p className="m-0 text-500 text-sm print-text-black">{t('diagnosis:colName')}</p>
                 <p className="m-0 font-bold text-lg">{detail.first_name} {detail.last_name}</p>
               </div>
               <div className="flex-1">
-                <p className="m-0 text-500 text-sm print-text-black">Edad</p>
-                <p className="m-0 font-bold text-lg">{detail.age} años</p>
+                <p className="m-0 text-500 text-sm print-text-black">{t('diagnosis:colAge')}</p>
+                <p className="m-0 font-bold text-lg">{detail.age}</p>
               </div>
               <div className="flex-1">
-                <p className="m-0 text-500 text-sm print-text-black">Género</p>
-                <p className="m-0 font-bold text-lg">{detail.gender === 1 ? 'Masculino' : 'Femenino'}</p>
+                <p className="m-0 text-500 text-sm print-text-black">{t('diagnosis:colGender')}</p>
+                <p className="m-0 font-bold text-lg">{detail.gender === 1 ? t('diagnosis:male') : t('diagnosis:female')}</p>
               </div>
             </div>
-            <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 print-text-black">Biomarcadores Clínicos</h3>
+            <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 print-text-black">{t('diagnosis:clinicalBiomarkers')}</h3>
             <div className="grid mb-4">
               {[
                 { label: 'ESR', value: detail.esr },
@@ -113,12 +113,12 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 { label: 'Anti-CCP', value: detail.anti_ccp },
                 { label: 'C3', value: detail.c3 },
                 { label: 'C4', value: detail.c4 },
-                { label: 'HLA-B27', value: detail.hla_b27 === 1 ? 'Positivo' : (detail.hla_b27 === 0 ? 'Negativo' : '-') },
-                { label: 'ANA', value: detail.ana === 1 ? 'Positivo' : (detail.ana === 0 ? 'Negativo' : '-') },
-                { label: 'Anti-Ro', value: detail.anti_ro === 1 ? 'Positivo' : (detail.anti_ro === 0 ? 'Negativo' : '-') },
-                { label: 'Anti-La', value: detail.anti_la === 1 ? 'Positivo' : (detail.anti_la === 0 ? 'Negativo' : '-') },
-                { label: 'Anti-dsDNA', value: detail.anti_dsdna === 1 ? 'Positivo' : (detail.anti_dsdna === 0 ? 'Negativo' : '-') },
-                { label: 'Anti-Sm', value: detail.anti_sm === 1 ? 'Positivo' : (detail.anti_sm === 0 ? 'Negativo' : '-') }
+                { label: 'HLA-B27', value: detail.hla_b27 === 1 ? t('common:positive') : (detail.hla_b27 === 0 ? t('common:negative') : '-') },
+                { label: 'ANA', value: detail.ana === 1 ? t('common:positive') : (detail.ana === 0 ? t('common:negative') : '-') },
+                { label: 'Anti-Ro', value: detail.anti_ro === 1 ? t('common:positive') : (detail.anti_ro === 0 ? t('common:negative') : '-') },
+                { label: 'Anti-La', value: detail.anti_la === 1 ? t('common:positive') : (detail.anti_la === 0 ? t('common:negative') : '-') },
+                { label: 'Anti-dsDNA', value: detail.anti_dsdna === 1 ? t('common:positive') : (detail.anti_dsdna === 0 ? t('common:negative') : '-') },
+                { label: 'Anti-Sm', value: detail.anti_sm === 1 ? t('common:positive') : (detail.anti_sm === 0 ? t('common:negative') : '-') }
               ].map((item, idx) => (
                 <div key={idx} className="col-4 p-2">
                   <div className="border-1 surface-border border-round p-2 h-full flex flex-column justify-content-center print-border-black">
@@ -128,25 +128,25 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                 </div>
               ))}
             </div>
-            <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 mt-5 print-text-black">Resultados de IA</h3>
+            <h3 className="text-teal-700 border-bottom-1 border-200 pb-2 mt-5 print-text-black">{t('diagnosis:aiResults')}</h3>
             <div className="surface-50 p-3 border-round mb-4 border-1 surface-border print-bg-white print-border-black">
               <div className="flex justify-content-between align-items-center mb-3">
-                <span className="font-semibold">Diagnóstico Principal:</span>
-                <span className="text-xl font-bold text-teal-600 print-text-black">{detail.primary_diagnosis ? getName(detail.primary_diagnosis) : 'No determinado'}</span>
+                <span className="font-semibold">{t('diagnosis:colPrimaryDiagnosis')}:</span>
+                <span className="text-xl font-bold text-teal-600 print-text-black">{detail.primary_diagnosis ? getName(detail.primary_diagnosis) : '-'}</span>
               </div>
               <div className="flex justify-content-between align-items-center">
-                <span className="font-semibold">Solapamiento Detectado:</span>
-                <span className="font-bold">{detail.overlap_syndrome_detected ? 'SÍ' : 'NO'}</span>
+                <span className="font-semibold">{t('diagnosis:overlapDetected')}</span>
+                <span className="font-bold">{detail.overlap_syndrome_detected ? t('common:yes') : t('common:no')}</span>
               </div>
             </div>
 
             <table className="w-full text-left border-collapse" style={{ fontSize: '14px' }}>
               <thead>
                 <tr className="border-bottom-2 surface-border print-border-black">
-                  <th className="py-2">Enfermedad</th>
-                  <th className="py-2 text-right">Probabilidad</th>
-                  <th className="py-2 text-center">Umbral</th>
-                  <th className="py-2 text-center">Resultado</th>
+                  <th className="py-2">{t('diagnosis:colDisease')}</th>
+                  <th className="py-2 text-right">{t('diagnosis:colProbability')}</th>
+                  <th className="py-2 text-center">{t('diagnosis:colThreshold')}</th>
+                  <th className="py-2 text-center">{t('diagnosis:colResult')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -162,14 +162,14 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
                       {(pred.threshold_used * 100).toFixed(1)}%
                     </td>
                     <td className="py-3 text-center print-text-black">
-                      {pred.is_positive ? 'POSITIVO' : 'NEGATIVO'}
+                      {pred.is_positive ? t('common:positive') : t('common:negative')}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="mt-5 mb-4">
-              <h4 className="text-teal-700 m-0 mb-3 print-text-black">Gráfica de Probabilidades</h4>
+              <h4 className="text-teal-700 m-0 mb-3 print-text-black">{t('diagnosis:probChart')}</h4>
               <div className="surface-50 p-4 border-round border-1 surface-border print-bg-white print-border-black">
                 <div className="flex flex-column gap-3">
                   {detail.predictions.map((pred, idx) => (
@@ -198,7 +198,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ visible, patientId, onHide 
               </div>
             </div>
             <div className="mt-6 pt-4 border-top-1 border-200 text-center text-sm text-500 print-text-black">
-              Este documento es generado por un sistema de apoyo diagnóstico basado en Inteligencia Artificial y no sustituye el criterio médico profesional.
+              {t('diagnosis:reportDisclaimer')}
             </div>
           </div>
         </div>

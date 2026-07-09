@@ -11,5 +11,16 @@
   "chartDistributionSeries": "Predicciones",
   "chartTimelineTitle": "Predicciones en el tiempo",
   "chartTimelineYAxis": "Predicciones",
-  "chartTimelineSeries": "Predicciones"
+  "chartTimelineSeries": "Predicciones",
+  "chartGenderTitle": "Enfermedades por Género",
+  "chartGenderYAxis": "Cantidad de Pacientes",
+  "genderFemale": "Femenino",
+  "genderMale": "Masculino",
+  "chartOverlapTitle": "Casos de Solapamiento",
+  "chartOverlapSeries": "Pacientes",
+  "overlapYes": "Solapamiento",
+  "overlapNo": "Diagnóstico Único",
+  "chartBiomarkersTitle": "Frecuencia de Biomarcadores",
+  "chartBiomarkersYAxis": "Casos Positivos",
+  "chartBiomarkersSeries": "Casos Positivos"
 }

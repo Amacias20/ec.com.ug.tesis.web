@@ -17,7 +17,7 @@ const AppMenu = () => {
           { label: t('diagnosis'), icon: 'pi pi-user-edit', to: '/diagnosis' },
           { label: t('modelInfo'), icon: 'pi pi-info-circle', to: '/model-info' },
           { label: t('explainability'), icon: 'pi pi-chart-bar', to: '/explainability' },
-          { label: 'Glosario', icon: 'pi pi-book', to: '/glossary' },
+          { label: t('glossary'), icon: 'pi pi-book', to: '/glossary' },
         ],
       },
     ],

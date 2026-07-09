@@ -280,7 +280,7 @@ const NewDiagnosis = ({ visible, onHide, onSuccess }: NewDiagnosisProps) => {
                 <div className="bg-indigo-50 p-4 border-bottom-1 surface-border">
                   <h3 className="m-0 mb-4 text-indigo-800 flex align-items-center gap-2">
                     <i className="pi pi-sparkles text-xl text-indigo-500"></i>
-                    Análisis Clínico de IA
+                    {t('diagnosis:aiClinicalAnalysis')}
                   </h3>
                   <div className="flex flex-column gap-3">
                     {Object.entries(explanation.natural_language_explanation || {}).map(([disease, text]) => (

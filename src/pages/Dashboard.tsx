@@ -51,7 +51,7 @@ const Dashboard = () => {
     return (
       <div className="flex flex-column justify-content-center align-items-center w-full" style={{ minHeight: '60vh' }}>
         <ProgressSpinner className="mb-4" style={{ width: '60px', height: '60px' }} strokeWidth="4" animationDuration=".5s" />
-        <h3 className="text-700 font-medium m-0 text-xl">{t('common:loading') || 'Cargando…'}</h3>
+        <h3 className="text-700 font-medium m-0 text-xl">{t('common:loading')}</h3>
       </div>
     );
   }
@@ -72,17 +72,17 @@ const Dashboard = () => {
 
   const genderOptions: Highcharts.Options = {
     chart: { type: 'column', height: 320 },
-    title: { text: 'Enfermedades por Género' }, // Can add translations later
+    title: { text: t('dashboard:chartGenderTitle') },
     xAxis: { categories: Object.keys(genderDistribution).map(getAbbr) },
-    yAxis: { title: { text: 'Cantidad de Pacientes' } },
+    yAxis: { title: { text: t('dashboard:chartGenderYAxis') } },
     plotOptions: {
       column: {
         stacking: 'normal',
       }
     },
     series: [
-      { type: 'column', name: 'Femenino', data: Object.values(genderDistribution).map(v => v.Femenino), color: '#d946ef' }, // Pink
-      { type: 'column', name: 'Masculino', data: Object.values(genderDistribution).map(v => v.Masculino), color: '#0ea5e9' } // Blue
+      { type: 'column', name: t('dashboard:genderFemale'), data: Object.values(genderDistribution).map(v => v.Femenino), color: '#d946ef' }, // Pink
+      { type: 'column', name: t('dashboard:genderMale'), data: Object.values(genderDistribution).map(v => v.Masculino), color: '#0ea5e9' } // Blue
     ],
     credits: { enabled: false },
   };
@@ -100,7 +100,7 @@ const Dashboard = () => {
 
   const overlapOptions: Highcharts.Options = {
     chart: { type: 'pie', height: 320 },
-    title: { text: 'Casos de Solapamiento' },
+    title: { text: t('dashboard:chartOverlapTitle') },
     plotOptions: {
       pie: {
         innerSize: '60%',
@@ -109,10 +109,10 @@ const Dashboard = () => {
     },
     series: [{
       type: 'pie',
-      name: 'Pacientes',
+      name: t('dashboard:chartOverlapSeries'),
       data: [
-        { name: 'Solapamiento', y: summary.overlap_syndrome_count, color: '#f97316' },
-        { name: 'Diagnóstico Único', y: summary.total_predictions - summary.overlap_syndrome_count, color: '#14b8a6' }
+        { name: t('dashboard:overlapYes'), y: summary.overlap_syndrome_count, color: '#f97316' },
+        { name: t('dashboard:overlapNo'), y: summary.total_predictions - summary.overlap_syndrome_count, color: '#14b8a6' }
       ]
     }],
     credits: { enabled: false }
@@ -120,10 +120,10 @@ const Dashboard = () => {
 
   const biomarkersOptions: Highcharts.Options = {
     chart: { type: 'bar', height: 320 },
-    title: { text: 'Frecuencia de Biomarcadores' },
+    title: { text: t('dashboard:chartBiomarkersTitle') },
     xAxis: { categories: Object.keys(biomarkers) },
-    yAxis: { title: { text: 'Casos Positivos' }, allowDecimals: false },
-    series: [{ type: 'bar', name: 'Casos Positivos', data: Object.values(biomarkers), color: '#8b5cf6' }],
+    yAxis: { title: { text: t('dashboard:chartBiomarkersYAxis') }, allowDecimals: false },
+    series: [{ type: 'bar', name: t('dashboard:chartBiomarkersSeries'), data: Object.values(biomarkers), color: '#8b5cf6' }],
     credits: { enabled: false },
     legend: { enabled: false },
   };

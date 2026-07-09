@@ -43,8 +43,8 @@ const ModelInfo = () => {
     return (
       <div className="flex flex-column justify-content-center align-items-center w-full" style={{ minHeight: '60vh' }}>
         <ProgressSpinner className="mb-4" style={{ width: '60px', height: '60px' }} strokeWidth="4" animationDuration=".5s" />
-        <h3 className="text-700 font-medium m-0 text-xl">{t('common:loading') || 'Cargando información...'}</h3>
-        <p className="text-500 mt-2">Por favor espera un momento</p>
+        <h3 className="text-700 font-medium m-0 text-xl">{t('common:loading')}</h3>
+        <p className="text-500 mt-2">{t('modelInfo:pleaseWait')}</p>
       </div>
     );
   }
@@ -56,18 +56,18 @@ const ModelInfo = () => {
           <div className="bg-red-50 text-red-500 border-circle p-4 mb-4 flex align-items-center justify-content-center">
             <i className="pi pi-exclamation-triangle" style={{ fontSize: '3rem' }}></i>
           </div>
-          <h2 className="text-900 font-bold text-2xl mb-2">{t('modelInfo:loadError') || 'Error al cargar'}</h2>
+          <h2 className="text-900 font-bold text-2xl mb-2">{t('modelInfo:loadError')}</h2>
           <p className="text-600 line-height-3 m-0 mb-4">
             {error || t('common:noData')}
           </p>
           <div className="flex gap-3">
             <button className="p-button p-component p-button-outlined p-button-secondary border-round-xl" onClick={() => window.location.reload()}>
               <span className="p-button-icon p-c p-button-icon-left pi pi-refresh"></span>
-              <span className="p-button-label p-c">Reintentar</span>
+              <span className="p-button-label p-c">{t('modelInfo:retry')}</span>
             </button>
             <button className="p-button p-component p-button-primary border-round-xl" onClick={() => window.history.back()}>
               <span className="p-button-icon p-c p-button-icon-left pi pi-arrow-left"></span>
-              <span className="p-button-label p-c">Volver</span>
+              <span className="p-button-label p-c">{t('modelInfo:back')}</span>
             </button>
           </div>
         </div>
@@ -79,14 +79,14 @@ const ModelInfo = () => {
     try {
       setSaving(true);
       await updateThresholds(localThresholds);
-      toast.current?.show({ severity: 'success', summary: 'Éxito', detail: 'Umbrales guardados correctamente', life: 3000 });
+      toast.current?.show({ severity: 'success', summary: t('modelInfo:saveSuccess'), detail: t('modelInfo:saveSuccessDetail'), life: 3000 });
       setInfo(prev => {
         if (!prev) return prev;
         const newThresholds = prev.label_names.map(name => localThresholds[name]);
         return { ...prev, thresholds: newThresholds };
       });
     } catch (e) {
-      toast.current?.show({ severity: 'error', summary: 'Error', detail: 'No se pudieron guardar los cambios', life: 3000 });
+      toast.current?.show({ severity: 'error', summary: t('modelInfo:saveError'), detail: t('modelInfo:saveErrorDetail'), life: 3000 });
     } finally {
       setSaving(false);
     }
@@ -99,7 +99,7 @@ const ModelInfo = () => {
       defaults[name] = 0.5;
     });
     setLocalThresholds(defaults);
-    toast.current?.show({ severity: 'info', summary: 'Restaurados', detail: 'Se asignó 0.5 a todos. Recuerda guardar los cambios.', life: 3000 });
+    toast.current?.show({ severity: 'info', summary: t('modelInfo:resetSuccess'), detail: t('modelInfo:resetSuccessDetail'), life: 3000 });
   };
 
   const thresholdRows = info.label_names.map((name, i) => ({
@@ -141,10 +141,10 @@ const ModelInfo = () => {
 
     featureImpOptions = {
       chart: { type: 'bar', height: 350 },
-      title: { text: 'Top 10 Características (Importancia Global)' },
+      title: { text: t('modelInfo:top10Features') },
       xAxis: { categories: sortedFeatures.map(f => f.name) },
-      yAxis: { title: { text: 'Importancia Promedio' } },
-      series: [{ type: 'bar', name: 'Importancia', data: sortedFeatures.map(f => f.val), color: '#3b82f6' }],
+      yAxis: { title: { text: t('modelInfo:averageImportance') } },
+      series: [{ type: 'bar', name: t('modelInfo:importance'), data: sortedFeatures.map(f => f.val), color: '#3b82f6' }],
       credits: { enabled: false },
       legend: { enabled: false }
     };
@@ -214,7 +214,7 @@ const ModelInfo = () => {
               </h3>
               <div className="flex gap-2">
                 <Button 
-                  label="Restaurar Defecto" 
+                  label={t('modelInfo:resetDefault')} 
                   icon="pi pi-undo" 
                   severity="secondary"
                   outlined
@@ -222,7 +222,7 @@ const ModelInfo = () => {
                   disabled={saving}
                 />
                 <Button 
-                  label={saving ? "Guardando..." : "Guardar Cambios"} 
+                  label={saving ? t('modelInfo:saving') : t('modelInfo:saveChanges')} 
                   icon={saving ? "pi pi-spin pi-spinner" : "pi pi-save"} 
                   severity="success" 
                   onClick={handleSaveThresholds} 
@@ -303,13 +303,13 @@ const ModelInfo = () => {
             <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
               <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
                 <div className="bg-blue-100 text-blue-600 p-2 border-round-md"><i className="pi pi-chart-bar"></i></div>
-                Importancia Global de Características
+                {t('modelInfo:globalFeatureImportance')}
               </h3>
             </div>
             {featureImpOptions ? (
               <HighchartsReact highcharts={Highcharts} options={featureImpOptions} />
             ) : (
-              <div className="text-center p-5 text-500">Datos de importancia no disponibles.</div>
+              <div className="text-center p-5 text-500">{t('modelInfo:noImportanceData')}</div>
             )}
           </Card>
         </div>
@@ -318,18 +318,18 @@ const ModelInfo = () => {
             <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 surface-border pb-3">
               <h3 className="m-0 text-2xl font-bold text-800 flex align-items-center gap-2">
                 <div className="bg-purple-100 text-purple-600 p-2 border-round-md"><i className="pi pi-table"></i></div>
-                Métricas por Enfermedad
+                {t('modelInfo:metricsPerDisease')}
               </h3>
             </div>
             {perLabelRows.length > 0 ? (
               <DataTable value={perLabelRows} stripedRows size="small" responsiveLayout="scroll" className="p-datatable-sm border-none">
-                <Column field="abbr" header="Enfermedad" headerClassName="text-500 font-semibold bg-transparent" bodyClassName="font-bold text-700" />
-                <Column field="precision" header="Precisión" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.precision * 100).toFixed(1) + '%'} />
-                <Column field="recall" header="Recall" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.recall * 100).toFixed(1) + '%'} />
-                <Column field="f1" header="F1-Score" headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.f1 * 100).toFixed(1) + '%'} />
+                <Column field="abbr" header={t('modelInfo:colDisease')} headerClassName="text-500 font-semibold bg-transparent" bodyClassName="font-bold text-700" />
+                <Column field="precision" header={t('modelInfo:precision')} headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.precision * 100).toFixed(1) + '%'} />
+                <Column field="recall" header={t('modelInfo:recall')} headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.recall * 100).toFixed(1) + '%'} />
+                <Column field="f1" header={t('modelInfo:f1Score')} headerClassName="text-500 font-semibold bg-transparent" body={(r) => (r.f1 * 100).toFixed(1) + '%'} />
               </DataTable>
             ) : (
-              <div className="text-center p-5 text-500">Métricas detalladas no disponibles.</div>
+              <div className="text-center p-5 text-500">{t('modelInfo:noDetailedMetrics')}</div>
             )}
           </Card>
         </div>

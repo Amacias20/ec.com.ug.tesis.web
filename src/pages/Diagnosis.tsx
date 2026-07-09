@@ -149,7 +149,7 @@ const Diagnosis = () => {
   const actionBody = (rowData: PatientRecord) => (
     <div className="flex gap-2">
       <Button icon="pi pi-eye" rounded outlined severity="info" aria-label="View" onClick={() => { setSelectedPatientId(rowData.id); setDetailVisible(true); }} tooltip={t('diagnosis:viewDetail')} />
-      <Button icon="pi pi-file-pdf" rounded outlined severity="warning" aria-label="Report" onClick={() => { setSelectedPatientId(rowData.id); setReportVisible(true); }} tooltip="Ver Reporte" />
+      <Button icon="pi pi-file-pdf" rounded outlined severity="warning" aria-label="Report" onClick={() => { setSelectedPatientId(rowData.id); setReportVisible(true); }} tooltip={t('diagnosis:reportViewer')} />
       <Button icon="pi pi-trash" rounded outlined severity="danger" aria-label="Delete" onClick={() => confirmDelete(rowData.id)} />
     </div>
   );
@@ -176,14 +176,14 @@ const Diagnosis = () => {
           </div>
           <div className="flex gap-3">
             <Button
-              label="Exportar a Excel"
+              label={t('diagnosis:exportExcel')}
               icon="pi pi-file-excel"
               className="p-button-rounded p-button-outlined bg-white font-bold shadow-3"
               style={{ color: '#10b981', borderColor: 'transparent', padding: '0.75rem 1.5rem' }}
               onClick={exportToExcel}
             />
             <Button
-              label="Nueva Evaluación"
+              label={t('diagnosis:newEvaluation')}
               icon="pi pi-plus"
               className="p-button-rounded bg-white border-none font-bold shadow-3"
               style={{ color: '#059669', padding: '0.75rem 1.5rem' }}

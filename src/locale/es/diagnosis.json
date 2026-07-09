@@ -46,5 +46,20 @@
   "viewDetail": "Ver detalle",
   "evaluationDetail": "Detalle de Evaluación",
   "patientInfo": "Información del Paciente",
-  "clinicalData": "Datos Clínicos Ingresados"
+  "clinicalData": "Datos Clínicos Ingresados",
+  "aiClinicalAnalysis": "Análisis Clínico de IA",
+  "aiClinicalExplanation": "Explicación Clínica del Modelo",
+  "reportTitle": "Reporte de Evaluación",
+  "reportSubtitle": "Generado por el sistema de IA",
+  "dateLabel": "Fecha:",
+  "patientIdLabel": "ID Paciente:",
+  "clinicalBiomarkers": "Biomarcadores Clínicos",
+  "aiResults": "Resultados de IA",
+  "overlapDetected": "Solapamiento Detectado:",
+  "colResult": "Resultado",
+  "probChart": "Gráfica de Probabilidades",
+  "reportDisclaimer": "Este documento es generado por un sistema de apoyo diagnóstico basado en Inteligencia Artificial y no sustituye el criterio médico profesional.",
+  "reportViewer": "Visor de Reporte",
+  "printPdf": "Imprimir PDF",
+  "exportExcel": "Exportar a Excel"
 }

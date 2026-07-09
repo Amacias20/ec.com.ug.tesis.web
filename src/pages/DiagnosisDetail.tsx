@@ -9,6 +9,7 @@ import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Card } from 'primereact/card';
 
 interface DiagnosisDetailProps {
   visible: boolean;
@@ -112,10 +113,10 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
       ) : detail ? (
         <div className="pt-3">
           
-          {/* Patient Info Card */}
-          <div className="bg-surface-50 p-4 border-round-xl border-1 surface-border mb-4">
-            <h3 className="m-0 mb-3 text-700 border-bottom-1 surface-border pb-2 flex align-items-center gap-2">
-              <i className="pi pi-user"></i> {t('diagnosis:patientInfo')}
+          <Card className="shadow-2 border-none border-round-2xl border-1 surface-border mb-4">
+            <h3 className="m-0 text-xl font-bold text-800 mb-4 border-bottom-1 surface-border pb-3 flex align-items-center gap-2">
+              <i className="pi pi-bolt text-indigo-500"></i>
+              {t('diagnosis:aiClinicalAnalysis')}
             </h3>
             <div className="grid">
               <div className="col-12 md:col-6 lg:col-3 mb-2">
@@ -137,7 +138,7 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
                 </span>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Biomarkers Card */}
           <div className="bg-white p-4 border-round-xl border-1 surface-border mb-4 shadow-1">
@@ -184,14 +185,16 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
           )}
 
           {detail.natural_language_explanation && Object.keys(detail.natural_language_explanation).length > 0 && (
-             <div className="bg-indigo-50 p-4 border-round-xl border-1 surface-border mb-4 shadow-1">
-                <h3 className="m-0 mb-4 text-indigo-800 flex align-items-center gap-2">
-                  <i className="pi pi-sparkles text-xl text-indigo-500"></i>
-                  Análisis Clínico de IA
-                </h3>
-                <div className="flex flex-column gap-3">
-                  {Object.entries(detail.natural_language_explanation).map(([disease, text]) => (
-                    <div key={disease} className="bg-white p-3 md:p-4 border-round-lg shadow-1 border-left-3 border-indigo-500 hover:shadow-2 transition-shadow">
+              <div className="border-1 surface-border border-round-2xl overflow-hidden shadow-1 mt-4">
+                <div className="bg-indigo-50 p-4 border-bottom-1 surface-border flex align-items-center gap-3">
+                  <div className="bg-indigo-100 text-indigo-600 border-circle w-3rem h-3rem flex align-items-center justify-content-center shadow-1">
+                    <i className="pi pi-sparkles text-xl"></i>
+                  </div>
+                  <h4 className="m-0 text-indigo-900 font-bold text-lg">{t('diagnosis:aiClinicalExplanation')}</h4>
+                </div>
+                <div className="bg-white p-4">
+                  {Object.entries(detail.natural_language_explanation!).map(([disease, text]) => (
+                    <div key={disease} className="mb-4 last:mb-0">
                       <div className="flex align-items-center gap-2 mb-2">
                          <i className="pi pi-verified text-indigo-500 text-xl"></i>
                          <strong className="text-indigo-900 text-lg">{getName(disease)}</strong>
