@@ -40,9 +40,36 @@ const DiagnosisDetail = ({ visible, patientId, onHide }: DiagnosisDetailProps) =
     try {
       const data = await getPatient(patientId!);
       setDetail(data);
+      setLoading(false); // Stop main loading so user can see data while explanation loads
+      
+      // Fetch explanation in the background
+      try {
+        const input = {
+          first_name: data.first_name,
+          last_name: data.last_name,
+          age: data.age,
+          gender: data.gender === 1 ? 'Male' : 'Female' as const,
+          esr: data.esr,
+          crp: data.crp,
+          rf: data.rf,
+          anti_ccp: data.anti_ccp,
+          hla_b27: data.hla_b27 === 1 ? 'Positive' : data.hla_b27 === 0 ? 'Negative' : null as any,
+          ana: data.ana === 1 ? 'Positive' : data.ana === 0 ? 'Negative' : null as any,
+          anti_ro: data.anti_ro === 1 ? 'Positive' : data.anti_ro === 0 ? 'Negative' : null as any,
+          anti_la: data.anti_la === 1 ? 'Positive' : data.anti_la === 0 ? 'Negative' : null as any,
+          anti_dsdna: data.anti_dsdna === 1 ? 'Positive' : data.anti_dsdna === 0 ? 'Negative' : null as any,
+          anti_sm: data.anti_sm === 1 ? 'Positive' : data.anti_sm === 0 ? 'Negative' : null as any,
+          c3: data.c3,
+          c4: data.c4
+        };
+        const { explain } = await import('services/diagnosisApi');
+        const explainData = await explain(input);
+        setDetail(prev => prev ? { ...prev, natural_language_explanation: explainData.natural_language_explanation } : prev);
+      } catch (e) {
+        console.error("Failed to fetch explanation", e);
+      }
     } catch (e) {
       setError(t('common:apiError'));
-    } finally {
       setLoading(false);
     }
   };
