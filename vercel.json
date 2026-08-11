@@ -1,0 +1,9 @@
+{
+  "buildCommand": "yarn build-prd",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "installCommand": "yarn install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
